@@ -5,29 +5,42 @@ using UnityEngine.UIElements;
 
 public class Jump : MonoBehaviour
 {
-    [SerializeField] private Animator jumpAnimator;
+    private Vector3 endPosition;
+    private Vector3 startPosition;
+    private float moveTime = 100f;
+    private float elapsedTime;
     private KeyCode jumpKeyCode;
-    private bool jumpEnabled;
-    [SerializeField] CharacterController characterController;
-    // Start is called before the first frame update
-
+    private Rigidbody rb;
+    private int jumpCount;
+    private CharacterController player;
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
-    }
-    void Start()
-    {
-        jumpKeyCode = characterController.jump;
-        jumpEnabled = characterController.reset;
+        player = GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        if (Input.GetKey(jumpKeyCode) && jumpEnabled == true) 
+        endPosition = transform.position;
+        jumpKeyCode = player.jump;
+        int jumpCount = player.countJump;
+    }
+
+    private void Update()
+    {
+        int jumpCount = player.countJump;
+        startPosition = transform.position;
+        if (Input.GetKeyDown(jumpKeyCode) && jumpCount>0) 
         {
-            Debug.Log("Jump");
-            jumpAnimator.Play(0);
+            endPosition = transform.position;
+            endPosition.y += 1;
+            jumpCount -= 1;
+            while (transform.position != endPosition)
+            {
+                elapsedTime += Time.deltaTime;
+                float percentageComplete = elapsedTime / moveTime;
+                transform.position = Vector3.Lerp(startPosition, endPosition, percentageComplete);
+            }
         }
     }
+
 }

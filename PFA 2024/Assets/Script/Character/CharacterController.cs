@@ -1,45 +1,46 @@
 using System;
+using System.Threading;
 using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
-    //[Header("Equilibrage")]
-   
+    private Vector3 endPosition;
+    private Vector3 startPosition;
+    private float moveTime = 100f;
+    private float elapsedTime;
+
     [Header("Configuration Touche")]
     [SerializeField] private KeyCode forward;
 
-    private float speed = 0.02f;
-    private float timeJump;
-    private bool resetJump = true;
-    public bool reset { get { return resetJump; } }
     public KeyCode jump { get { return forward; } }
+
+    private int nbJump =1;
+    public int countJump { get { return nbJump; } }
 
     private void Start()
     {
-        Debug.Log(transform.position.x);
+        endPosition = transform.position;
     }
 
-    private void FixedUpdate()
-    {
-        if (Input.GetKey(forward) && resetJump == true)
+    private void Update()
+    {   
+        startPosition = transform.position;
+        if (Input.GetKey(forward) && nbJump > 0)
         {
-            Vector3 _currentPosition = transform.position;
-            while (timeJump < 1)
-            {
-                timeJump += 0.02f ;
-                _currentPosition.x += speed;
-                transform.position = _currentPosition;
-            }
-            resetJump = false;
+            endPosition = transform.position;
+            endPosition.z += 1;
+            nbJump -= 1;
+        }
+        elapsedTime += Time.deltaTime;
+        float percentageComplete= elapsedTime/moveTime;
+        transform.position = Vector3.Lerp(startPosition,endPosition, percentageComplete);
+
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Sol" && nbJump<=1)
+        {
+            nbJump = 1;
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        resetJump = GetComponent<bool>();
-        if (resetJump == true)
-        {
-            resetJump = false;
-        }
-    }
-
 }
