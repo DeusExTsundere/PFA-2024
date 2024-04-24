@@ -1,15 +1,17 @@
 using System;
 using System.Threading;
 using UnityEngine;
-public class characterController : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
-
+    private Quaternion actualRotation;
     private Quaternion finalset;
     private Quaternion oldset;
+    private Vector3 stockOldSet;
     private Vector3 endPosition;
-    private Vector3 startPosition;
-    private float moveTime = 0.5f;
-    private float rotationSpeed = 1.5f;
+    private Vector3 currentPosition;
+    private float inputTime;
+    private float moveTime = 2f;
+    private float rotationSpeed = 7.5f;
     private float elapsedTime;
     private float rotationTime;
 
@@ -24,58 +26,63 @@ public class characterController : MonoBehaviour
     {
         endPosition = transform.position;
         finalset = transform.rotation;
-        Debug.Log(finalset);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        startPosition = transform.position;
+        currentPosition = transform.position;
         if (Input.GetKey(forward) && jumpEnable == true)
         {
             elapsedTime = 0;
             endPosition = transform.position;
             endPosition.z += 1;
             jumpEnable = false;
+            inputTime = moveTime;
         }
 
-        if(Input.GetKey(backward) && jumpEnable == true)
+        if (Input.GetKey(backward) && jumpEnable == true)
         {
             elapsedTime = 0;
             endPosition = transform.position;
             endPosition.z -= 1;
             jumpEnable = false;
+            inputTime = moveTime;
         }
 
         elapsedTime += Time.fixedDeltaTime;
-        float percentageComplete = elapsedTime/moveTime;
-        transform.position = Vector3.Lerp(startPosition,endPosition, percentageComplete);
+        float percentageComplete = elapsedTime / moveTime;
+        transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
 
-        if (elapsedTime > 0.5f)
+
+
+        actualRotation = transform.rotation;
+        if (Input.GetKey(turnLeft) && jumpEnable == true)
+        {
+            elapsedTime = 0;
+            oldset = transform.rotation;
+            stockOldSet = oldset.eulerAngles;
+            stockOldSet.y -= 90;
+            finalset = Quaternion.Euler(stockOldSet);
+            jumpEnable = false;
+            inputTime = rotationSpeed;
+        }
+        if (Input.GetKey(turnRight) && jumpEnable == true)
+        {
+            elapsedTime = 0;
+            oldset = transform.rotation;
+            stockOldSet = oldset.eulerAngles;
+            stockOldSet.y += 90;
+            finalset = Quaternion.Euler(stockOldSet);
+            jumpEnable = false;
+            inputTime = rotationSpeed;
+        }
+        elapsedTime += Time.fixedDeltaTime;
+        float rotationComplete = elapsedTime / rotationSpeed;
+        transform.rotation=Quaternion.Slerp(actualRotation, finalset, rotationComplete);
+
+        if (elapsedTime > inputTime)
         {
             jumpEnable = true;
         }
-        oldset = transform.rotation;
-        if (Input.GetKey (turnLeft) && elapsedTime > rotationSpeed)
-        {
-            finalset = transform.rotation;
-            elapsedTime = 0;
-            finalset.y += 45;
-        }
-
-        if (Input.GetKey (turnRight) && elapsedTime > rotationSpeed)
-        {
-            finalset = transform.rotation;
-            elapsedTime = 0;
-            finalset.y -= 45;
-        }
-        elapsedTime += Time.fixedDeltaTime;
-        float rotationTime = elapsedTime / moveTime;
-        transform.rotation = Quaternion.Lerp(oldset,finalset, rotationTime);
-
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        jumpEnable = true;
     }
 }

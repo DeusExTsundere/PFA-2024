@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class rotateControl : MonoBehaviour
 {
+    private Quaternion endStockageRotation;
+    private Quaternion startRotation;
     [SerializeField] private KeyCode turnLeft;
     [SerializeField] private KeyCode turnRight;
     private Quaternion newset;
@@ -11,26 +13,17 @@ public class rotateControl : MonoBehaviour
     private void Start()
     {
         newset = transform.rotation;
+        startRotation = transform.rotation;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Input.GetKey(turnRight))
+        startRotation = transform.rotation;
+         if (Input.GetKey(turnLeft))
         {
-            for (int i = 0; i < 90; i++)
-            {
-                newset.y += 1;
-                transform.rotation = newset;
-            }
-        }
-        else if (Input.GetKey(turnLeft))
-        {
-            for (int i = 0; i < 90; i++)
-            {
-                newset.y -= 1;
-                transform.rotation = newset;
-            }
+            endStockageRotation = transform.rotation;
+
         }
     }
 }
