@@ -10,7 +10,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 endPosition;
     private Vector3 currentPosition;
     private float inputTime;
-    private float moveTime = 2f;
+    private float moveTime = 1.5f;
     private float rotationSpeed = 7.5f;
     private float elapsedTime;
     private float rotationTime;
@@ -37,7 +37,7 @@ public class CharacterController : MonoBehaviour
             endPosition = transform.position;
             endPosition.z += 1;
             jumpEnable = false;
-            inputTime = moveTime;
+            inputTime = 3f;
         }
 
         if (Input.GetKey(backward) && jumpEnable == true)
@@ -46,7 +46,7 @@ public class CharacterController : MonoBehaviour
             endPosition = transform.position;
             endPosition.z -= 1;
             jumpEnable = false;
-            inputTime = moveTime;
+            inputTime = 3f;
         }
 
         elapsedTime += Time.fixedDeltaTime;
