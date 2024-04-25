@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Sol
+  - Arbre
+  - vehicle
+  - eau
   layers:
   - Default
   - TransparentFX
