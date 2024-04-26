@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 public class CharacterController : MonoBehaviour
@@ -37,22 +37,16 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         currentPosition = transform.position;
-        if ((Input.GetKey(forward) || Input.GetKey(forwardSecond)) && jumpEnable == true && transform.position.x <5)
+        if ((Input.GetKey(forward) || Input.GetKey(forwardSecond)) && jumpEnable == true && transform.position.z < 35)
         {
-            oldPosition = transform.position;
-            elapsedTime = 0;
-            endPosition = transform.position;
-            endPosition += transform.forward * 1;
-            jumpEnable = false;
+            Debug.Log("forward");
+            moveForward();
         }
 
-        else if (Input.GetKey(backward) && jumpEnable == true && transform.position.x > 5)
+        else if (Input.GetKey(backward) && jumpEnable == true && transform.position.z > -5)
         {
-            oldPosition = transform.position;
-            elapsedTime = 0;
-            endPosition = transform.position;
-            endPosition -= transform.forward * 1;
-            jumpEnable = false;
+            Debug.Log("back");
+            moveBack();
         }
         float percentageComplete = elapsedTime / moveTime;
         transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
@@ -60,23 +54,15 @@ public class CharacterController : MonoBehaviour
 
 
         actualRotation = transform.rotation;
-        if (Input.GetKey(turnLeft) && jumpEnable == true)
+        if (Input.GetKey(turnLeft) && jumpEnable == true && transform.position.x > -5)
         {
-            elapsedTime = 0;
-            oldset = transform.rotation;
-            stockOldSet = oldset.eulerAngles;
-            stockOldSet.y -= 90;
-            finalset = Quaternion.Euler(stockOldSet);
-            jumpEnable = false;
+            Debug.Log("left");
+            moveLeft();
         }
-        if (Input.GetKey(turnRight) && jumpEnable == true)
+        if (Input.GetKey(turnRight) && jumpEnable == true  && transform.position.x < 5)
         {
-            elapsedTime = 0;
-            oldset = transform.rotation;
-            stockOldSet = oldset.eulerAngles;
-            stockOldSet.y += 90;
-            finalset = Quaternion.Euler(stockOldSet);
-            jumpEnable = false;
+            Debug.Log("right");
+            moveRight();
         }
         elapsedTime += Time.fixedDeltaTime;
         float rotationComplete = elapsedTime / rotationSpeed;
@@ -113,12 +99,239 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void avance()
+    private void moveForward()
     {
         if (actualRotation.eulerAngles.y != 0)
         {
-            if (actualRotation.eulerAngles.y 
+            if (actualRotation.eulerAngles.y == 90)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 0;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+            else if (actualRotation.eulerAngles.y == 180 )
+            {
+                int rotaRandom = Random.Range(0,2);
+                if ( rotaRandom == 0 )
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 90;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+                else if (rotaRandom > 0) 
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 270;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+            }
+            else if (actualRotation.eulerAngles.y == 270)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 0;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+        }
+        else if (actualRotation.eulerAngles.y == 0)
+        {
+            oldPosition = transform.position;
+            elapsedTime = 0;
+            endPosition = transform.position;
+            endPosition += transform.forward * 1;
+            jumpEnable = false;
         }
 
+    }
+
+    private void moveBack()
+    {
+        if (actualRotation.eulerAngles.y != 180)
+        {
+            if (actualRotation.eulerAngles.y == 90)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 180;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+            else if (actualRotation.eulerAngles.y == 0)
+            {
+                int rotaRandom = Random.Range(0, 2);
+                if (rotaRandom == 0)
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 90;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+                else if (rotaRandom > 0)
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 270;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+            }
+
+            else if (actualRotation.eulerAngles.y == 270)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 180;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+        }
+        else if (actualRotation.eulerAngles.y == 180)
+        {
+            oldPosition = transform.position;
+            elapsedTime = 0;
+            endPosition = transform.position;
+            endPosition += transform.forward * 1;
+            jumpEnable = false;
+        }
+    }
+
+    private void moveRight()
+    {
+        if (actualRotation.eulerAngles.y != 90)
+        {
+            if (actualRotation.eulerAngles.y == 180)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 90;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+
+            else if (actualRotation.eulerAngles.y == 270)
+            {
+                int rotaRandom = Random.Range(0, 2);
+                if (rotaRandom == 0)
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 0;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+                else if (rotaRandom > 0)
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 180;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+            }
+            else if (actualRotation.eulerAngles.y == 0)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 90;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+        }
+        else if (actualRotation.eulerAngles.y == 90)
+        {
+             oldPosition = transform.position;
+             elapsedTime = 0;
+             endPosition = transform.position;
+             endPosition += transform.forward * 1;
+             jumpEnable = false;
+        }
+    }
+
+    private void moveLeft()
+    {
+        if (actualRotation.eulerAngles.y != 270)
+        {
+            if (actualRotation.eulerAngles.y == 0)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 270;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+            else if (actualRotation.eulerAngles.y == 180)
+            {
+                elapsedTime = 0;
+                oldset = transform.rotation;
+                stockOldSet = oldset.eulerAngles;
+                stockOldSet.y = 270;
+                finalset = Quaternion.Euler(stockOldSet);
+                jumpEnable = false;
+            }
+
+            else if (actualRotation.eulerAngles.y == 90)
+            {
+                int rotaRandom = Random.Range(0, 1);
+                if (rotaRandom == 0)
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 0;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+                else
+                {
+                    elapsedTime = 0;
+                    oldset = transform.rotation;
+                    stockOldSet = oldset.eulerAngles;
+                    stockOldSet.y = 180;
+                    finalset = Quaternion.Euler(stockOldSet);
+                    jumpEnable = false;
+                }
+
+            }
+        }
+        else if (actualRotation.eulerAngles.y == 270)
+        {
+            oldPosition = transform.position;
+            elapsedTime = 0;
+            endPosition = transform.position;
+            endPosition += transform.forward * 1;
+            jumpEnable = false;
+        }
     }
 }
