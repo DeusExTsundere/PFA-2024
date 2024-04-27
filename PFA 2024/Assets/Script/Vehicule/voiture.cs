@@ -5,17 +5,16 @@ using UnityEngine;
 public class voiture : MonoBehaviour
 {
     [SerializeField] private int speed = 2;
-    private bool coteSpawn;
+    private Quaternion rotation;
 
     private void Start()
     {
+        rotation = transform.rotation;
+
         if (transform.position.x > 0)
         {
-            coteSpawn = true;            
-        }
-        if (coteSpawn == true)
-        {
-            speed = -speed;
+            rotation.y = 180;
+            transform.rotation = rotation;
         }
     }
 

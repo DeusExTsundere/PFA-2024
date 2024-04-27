@@ -11,23 +11,21 @@ public class CharacterController : MonoBehaviour
     private Vector3 endPosition;
     private Vector3 currentPosition;
     private int vie = 3;
-    private float inputTime =4f;
-    private float moveTime = 1.5f;
+    private float inputTime = 1.5f;
+    private float moveTime = 1.3f;
     private float rotationSpeed = 7.5f;
     private float elapsedTime;
     private float rotationTime;
+    private bool jumpEnable = true;
 
     [Header("Configuration Touche")]
     [SerializeField] private KeyCode turnLeft;
     [SerializeField] private KeyCode turnRight;
-    [Header("Avance")]
     [SerializeField] private KeyCode forward;
-    [SerializeField] private KeyCode forwardSecond;
     [SerializeField] private KeyCode backward;
     [Header("Configuration")]
     [SerializeField] private GameObject spawnReset;
-    private Rigidbody rb;
-    private bool jumpEnable = true;
+    [SerializeField] private Animator animator;
     private void Start()
     {
         endPosition = transform.position;
@@ -37,15 +35,13 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         currentPosition = transform.position;
-        if ((Input.GetKey(forward) || Input.GetKey(forwardSecond)) && jumpEnable == true && transform.position.z < 35)
+        if (Input.GetKey(forward) && jumpEnable == true && endPosition.z < 35)
         {
-            Debug.Log("forward");
             moveForward();
         }
 
-        else if (Input.GetKey(backward) && jumpEnable == true && transform.position.z > -5)
+        else if (Input.GetKey(backward) && jumpEnable == true && endPosition.z > -5)
         {
-            Debug.Log("back");
             moveBack();
         }
         float percentageComplete = elapsedTime / moveTime;
@@ -54,14 +50,12 @@ public class CharacterController : MonoBehaviour
 
 
         actualRotation = transform.rotation;
-        if (Input.GetKey(turnLeft) && jumpEnable == true && transform.position.x > -5)
+        if (Input.GetKey(turnLeft) && jumpEnable == true && endPosition.x > -5)
         {
-            Debug.Log("left");
             moveLeft();
         }
-        if (Input.GetKey(turnRight) && jumpEnable == true  && transform.position.x < 5)
+        if (Input.GetKey(turnRight) && jumpEnable == true  && endPosition.x < 5)
         {
-            Debug.Log("right");
             moveRight();
         }
         elapsedTime += Time.fixedDeltaTime;
@@ -76,8 +70,6 @@ public class CharacterController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collision");
-        Debug.Log(other.tag);
         if (other.tag == "Arbre")
         {
             endPosition = oldPosition ;
@@ -154,6 +146,7 @@ public class CharacterController : MonoBehaviour
             endPosition = transform.position;
             endPosition += transform.forward * 1;
             jumpEnable = false;
+            animator.Play("saut");
         }
 
     }
@@ -214,6 +207,7 @@ public class CharacterController : MonoBehaviour
             endPosition = transform.position;
             endPosition += transform.forward * 1;
             jumpEnable = false;
+            animator.Play("saut");
         }
     }
 
@@ -273,6 +267,7 @@ public class CharacterController : MonoBehaviour
              endPosition = transform.position;
              endPosition += transform.forward * 1;
              jumpEnable = false;
+             animator.Play("saut");
         }
     }
 
@@ -332,6 +327,7 @@ public class CharacterController : MonoBehaviour
             endPosition = transform.position;
             endPosition += transform.forward * 1;
             jumpEnable = false;
+            animator.Play("saut");
         }
     }
 }
