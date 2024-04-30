@@ -10,13 +10,14 @@ public class CharacterController : MonoBehaviour
     private Vector3 stockOldSet;
     private Vector3 endPosition;
     private Vector3 currentPosition;
-    private int vie = 3;
-    private float inputTime = 1.5f;
-    private float moveTime = 1.3f;
-    private float rotationSpeed = 7.5f;
+    private float inputTime = 1.2f;
+    private float moveTime = 1f;
+    private float rotationSpeed = 1f;
     private float elapsedTime;
-    private float rotationTime;
     private bool jumpEnable = true;
+
+    private int vie = 3;
+    public int PointDeVie { get { return vie; } }
 
     [Header("Configuration Touche")]
     [SerializeField] private KeyCode turnLeft;
@@ -26,6 +27,7 @@ public class CharacterController : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private GameObject spawnReset;
     [SerializeField] private Animator animator;
+    [SerializeField] private float distanceSaut = 1.5f;
     private void Start()
     {
         endPosition = transform.position;
@@ -35,12 +37,12 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         currentPosition = transform.position;
-        if (Input.GetKey(forward) && jumpEnable == true && endPosition.z < 35)
+        if (Input.GetKey(forward) && jumpEnable == true && (endPosition.z < 35 || currentPosition.z < 35))
         {
             moveForward();
         }
 
-        else if (Input.GetKey(backward) && jumpEnable == true && endPosition.z > -5)
+        else if (Input.GetKey(backward) && jumpEnable == true && (endPosition.z > -5 || currentPosition.z > -5))
         {
             moveBack();
         }
@@ -50,11 +52,11 @@ public class CharacterController : MonoBehaviour
 
 
         actualRotation = transform.rotation;
-        if (Input.GetKey(turnLeft) && jumpEnable == true && endPosition.x > -5)
+        if (Input.GetKey(turnLeft) && jumpEnable == true && (endPosition.x > -5 || currentPosition.x > -5))
         {
             moveLeft();
         }
-        if (Input.GetKey(turnRight) && jumpEnable == true  && endPosition.x < 5)
+        if (Input.GetKey(turnRight) && jumpEnable == true  && (endPosition.x < 5 || currentPosition.x < 5 ))
         {
             moveRight();
         }
@@ -144,7 +146,7 @@ public class CharacterController : MonoBehaviour
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
-            endPosition += transform.forward * 1;
+            endPosition += transform.forward * distanceSaut;
             jumpEnable = false;
             animator.Play("saut");
         }
@@ -205,7 +207,7 @@ public class CharacterController : MonoBehaviour
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
-            endPosition += transform.forward * 1;
+            endPosition += transform.forward * distanceSaut;
             jumpEnable = false;
             animator.Play("saut");
         }
@@ -265,7 +267,7 @@ public class CharacterController : MonoBehaviour
              oldPosition = transform.position;
              elapsedTime = 0;
              endPosition = transform.position;
-             endPosition += transform.forward * 1;
+             endPosition += transform.forward * distanceSaut;
              jumpEnable = false;
              animator.Play("saut");
         }
@@ -325,7 +327,7 @@ public class CharacterController : MonoBehaviour
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
-            endPosition += transform.forward * 1;
+            endPosition += transform.forward * distanceSaut;
             jumpEnable = false;
             animator.Play("saut");
         }

@@ -28,4 +28,9 @@ public class voiture : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 }
