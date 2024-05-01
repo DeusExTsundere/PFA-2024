@@ -7,7 +7,7 @@ public class pointDeVie : MonoBehaviour
     private int vie;
     private void Awake()
     {
-        vie = levelSelect.Level;
+        //vie = levelSelect.Level;
     }
 
     // Update is called once per frame

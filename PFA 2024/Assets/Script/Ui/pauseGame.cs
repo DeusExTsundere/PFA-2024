@@ -5,40 +5,42 @@ using UnityEngine;
 
 public class pauseGame : MonoBehaviour
 {
-    private float complete;
-    private float transition = 1.5f;
     private float elapsedTime;
-    private RectTransform pause;
+    [SerializeField, Range(0, 3)] private float transitionTime = 1;
+    private float percentageComplete;
+    private RectTransform RectTransform;
+    private RectTransform actualTransform;
+    private RectTransform expectedTransform;
+    private Vector2 pauseVector = new Vector2(0, 0);
+    private Vector2 unPauseVector = new Vector2(470, 0);
     private RectTransform unPause;
-    private RectTransform actualState;
+    private RectTransform pause;
     private bool enablePause = false;
-    void Start()
-    {
-        actualState = GetComponent<RectTransform>();
-        unPause = actualState;
-        pause.localPosition = new Vector3(-469, 0, 0);
 
+    private void Start()
+    {
+        actualTransform = GetComponent<RectTransform>();
+        expectedTransform = pauseVector;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        actualState = GetComponent<RectTransform>();
         elapsedTime += Time.deltaTime;
         if (Input.GetKey(KeyCode.Escape) && enablePause == false)
         {
-            enablePause = true;
-            actualState = pause;
+            actualTransform = GetComponent<RectTransform>();
             elapsedTime = 0;
+            expectedTransform.anchoredPosition = pauseVector;
         }
         else if (Input.GetKey(KeyCode.Escape) && enablePause == true)
         {
-            enablePause = false;
-            actualState = unPause;
+            actualTransform = GetComponent<RectTransform>();
             elapsedTime = 0;
+            expectedTransform.anchoredPosition = unPauseVector;
         }
-        complete = elapsedTime/transition;
-        GetComponent<RectTransform>().localPosition = Vector3.Lerp(GetComponent<RectTransform>().localPosition, actualState,complete);
-
+        percentageComplete = elapsedTime / transitionTime;
+        actualTransform. = Vector2.Lerp(actualTransform, expectedTransform, percentageComplete);
     }
+
+
 }
