@@ -15,6 +15,7 @@ public class spawnVehicle : MonoBehaviour
         {
             chrono = 0;
             Instantiate(voiture,transform.position, Quaternion.identity);
+            timer = Random.Range(3 ,7.5f);
         }
     }
 }

@@ -7,10 +7,14 @@ public class uiLife : MonoBehaviour
 {
     [SerializeField] private CharacterController character;
     private TextMeshProUGUI life;
-    void Start()
+
+    private void Awake()
     {
         life = GetComponent<TextMeshProUGUI>();
+        life.SetText("Point de Vie : " + character.PointDeVie);        
     }
+
+
 
     // Update is called once per frame
     void Update()

@@ -3,6 +3,7 @@ using System.Threading;
 using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
+    private Vector3 respawn;
     private Quaternion actualRotation;
     private Quaternion finalset;
     private Quaternion oldset;
@@ -14,22 +15,26 @@ public class CharacterController : MonoBehaviour
     private float moveTime = 1f;
     private float rotationSpeed = 1f;
     private float elapsedTime;
+    private bool isAlive = true;
     private bool jumpEnable = true;
 
     private int vie = 3;
     public int PointDeVie { get { return vie; } }
 
+    [Header("Configuratin Menu")]
+    [SerializeField] private GameObject ui;
+    [SerializeField] private GameObject menuFailed;
     [Header("Configuration Touche")]
     [SerializeField] private KeyCode turnLeft;
     [SerializeField] private KeyCode turnRight;
     [SerializeField] private KeyCode forward;
     [SerializeField] private KeyCode backward;
     [Header("Configuration")]
-    [SerializeField] private GameObject spawnReset;
     [SerializeField] private Animator animator;
     [SerializeField] private float distanceSaut = 1.5f;
     private void Start()
     {
+        respawn = transform.position;
         endPosition = transform.position;
         finalset = transform.rotation;
     }
@@ -47,9 +52,6 @@ public class CharacterController : MonoBehaviour
             moveBack();
         }
         float percentageComplete = elapsedTime / moveTime;
-        transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
-
-
 
         actualRotation = transform.rotation;
         if (Input.GetKey(turnLeft) && jumpEnable == true && (endPosition.x > -5 || currentPosition.x > -5))
@@ -62,11 +64,23 @@ public class CharacterController : MonoBehaviour
         }
         elapsedTime += Time.fixedDeltaTime;
         float rotationComplete = elapsedTime / rotationSpeed;
-        transform.rotation=Quaternion.Slerp(actualRotation, finalset, rotationComplete);
+
+        if (isAlive == true)
+        {
+            transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
+            transform.rotation=Quaternion.Slerp(actualRotation, finalset, rotationComplete);
+        }
+
 
         if (elapsedTime > inputTime)
         {
             jumpEnable = true;
+        }
+        if (vie == 0)
+        {
+            isAlive = false;
+            ui.SetActive(false);
+            menuFailed.SetActive(true);
         }
     }
 
@@ -78,18 +92,18 @@ public class CharacterController : MonoBehaviour
         }
         else if (other.tag == "vehicle")
         {
+            endPosition = respawn;
             vie -= 1;
-            if (vie == 0)
-            {
-                stockOldSet.y = 0;
-                finalset = Quaternion.Euler(stockOldSet);
-                endPosition = spawnReset.transform.position;
-                vie = 3;
-            }
         }
         else if (other.tag == "eau")
         {
-            endPosition = spawnReset.transform.position;
+            vie -= 1;
+            endPosition = respawn;
+        }
+        else if (other.tag == "checkpoint")
+        {
+            respawn = other.transform.position;
+            respawn.y += 0.5f ;
         }
     }
 

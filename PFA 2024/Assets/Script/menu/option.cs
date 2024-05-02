@@ -10,15 +10,19 @@ public class option : MonoBehaviour
 {
     [Header("Main Menu")]
     [SerializeField] private CanvasGroup mainMenu;
+    [SerializeField] private GameObject menu;
     [SerializeField] private CanvasGroup settingsMenu;
+    [SerializeField] private GameObject setting;
     [SerializeField] private CanvasGroup creditsMenu;
     [Header("Settings Menu")]
     [SerializeField] private CanvasGroup soundMenu;
     [SerializeField] private CanvasGroup controleMenu;
     [Header("Difficulty Menu")]
     [SerializeField] private CanvasGroup difficultyMenu;
+    [SerializeField] private GameObject difficulty;
 
     private float tempo = 0.9f;
+    private float tempoDesactivation = 1f;
     private bool mainMenuEnabled = true;
     private bool settingsMenuEnabled = false;
     private bool creditsMenuEnabled = true;
@@ -106,7 +110,7 @@ public class option : MonoBehaviour
         if (creditsMenuEnabled == true && Input.GetKey(KeyCode.Escape))
         {
             creditsMenuEnabled = false;
-
+            menu.SetActive(true);
             mainMenuEnabled = true;
         }
     }
@@ -120,7 +124,8 @@ public class option : MonoBehaviour
 
     public void backMenu()
     {
-        mainMenuEnabled = true;
+        difficulty.SetActive(true);
+        difficultyMenuEnabled = false;
         StartCoroutine(backMenuTempo());
     }
 
@@ -132,6 +137,7 @@ public class option : MonoBehaviour
 
     public void optionBack()
     {
+        menu.SetActive(true);
         settingsMenuEnabled = false;
         StartCoroutine(optionBackTempo());
     }
@@ -155,30 +161,40 @@ public class option : MonoBehaviour
     IEnumerator startTempo()
     {
         yield return new WaitForSeconds(tempo);
+        difficulty.SetActive(true);
         difficultyMenuEnabled = true;
+        yield return new WaitForSeconds(tempoDesactivation);
+        menu.SetActive(false);
     }
 
     IEnumerator backMenuTempo()
     {
         yield return new WaitForSeconds(tempo);
-        difficultyMenuEnabled = false;
+        difficulty.SetActive(false);
+        menu.SetActive(true);
+        mainMenuEnabled = true;
     }
 
     IEnumerator optionClickTempo()
     {
         yield return new WaitForSeconds(tempo);
+        menu.SetActive(false);
+        setting.SetActive(true);
         settingsMenuEnabled = true;
     }
 
     IEnumerator optionBackTempo()
     {
+        menu.SetActive(true);
         yield return new WaitForSeconds(tempo);
+        setting.SetActive(false);
         mainMenuEnabled = true;
     }
 
     IEnumerator creditClickTempo()
     {
         yield return new WaitForSeconds(tempo);
+        menu.SetActive(false);
         creditsMenuEnabled = true;
     }
 }
