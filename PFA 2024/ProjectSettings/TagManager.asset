@@ -9,6 +9,7 @@ TagManager:
   - vehicle
   - eau
   - checkpoint
+  - platform
   layers:
   - Default
   - TransparentFX

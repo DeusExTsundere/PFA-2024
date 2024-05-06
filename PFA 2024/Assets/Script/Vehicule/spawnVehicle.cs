@@ -18,4 +18,8 @@ public class spawnVehicle : MonoBehaviour
             timer = Random.Range(3 ,7.5f);
         }
     }
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 }

@@ -28,6 +28,11 @@ public class option : MonoBehaviour
     private bool creditsMenuEnabled = true;
     private bool difficultyMenuEnabled = false;
 
+    private void Start()
+    {
+        Screen.SetResolution(1920, 1080, true);
+    }
+
 
     private void Update()
     {

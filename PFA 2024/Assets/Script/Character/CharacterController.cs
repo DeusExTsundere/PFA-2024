@@ -11,12 +11,14 @@ public class CharacterController : MonoBehaviour
     private Vector3 stockOldSet;
     private Vector3 endPosition;
     private Vector3 currentPosition;
-    private float inputTime = 1.2f;
     private float moveTime = 1f;
+    public float speed { get { return moveTime; } }
     private float rotationSpeed = 1f;
     private float elapsedTime;
     private bool isAlive = true;
     private bool jumpEnable = true;
+    private bool movementEnable=true;
+    private bool resetPosition = false;
 
     private int vie = 3;
     public int PointDeVie { get { return vie; } }
@@ -32,6 +34,7 @@ public class CharacterController : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private Animator animator;
     [SerializeField] private float distanceSaut = 1.5f;
+    [SerializeField] private float hauteurSaut = 1f;
     private void Start()
     {
         respawn = transform.position;
@@ -65,17 +68,21 @@ public class CharacterController : MonoBehaviour
         elapsedTime += Time.fixedDeltaTime;
         float rotationComplete = elapsedTime / rotationSpeed;
 
-        if (isAlive == true)
+        if ((currentPosition != endPosition && movementEnable == true) || resetPosition == true)
         {
-            transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
-            transform.rotation=Quaternion.Slerp(actualRotation, finalset, rotationComplete);
+            if (isAlive == true)
+            {
+                transform.position = Vector3.Lerp(currentPosition, endPosition, percentageComplete);
+            }
+
         }
-
-
-        if (elapsedTime > inputTime)
+        if (currentPosition == endPosition)
         {
-            jumpEnable = true;
+            movementEnable = false;
+            resetPosition = false;
         }
+        transform.rotation = Quaternion.Slerp(actualRotation, finalset, rotationComplete);
+
         if (vie == 0)
         {
             isAlive = false;
@@ -83,6 +90,7 @@ public class CharacterController : MonoBehaviour
             menuFailed.SetActive(true);
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -92,11 +100,13 @@ public class CharacterController : MonoBehaviour
         }
         else if (other.tag == "vehicle")
         {
+            resetPosition = true;
             endPosition = respawn;
             vie -= 1;
         }
         else if (other.tag == "eau")
         {
+            resetPosition = true;
             vie -= 1;
             endPosition = respawn;
         }
@@ -105,6 +115,28 @@ public class CharacterController : MonoBehaviour
             respawn = other.transform.position;
             respawn.y += 0.5f ;
         }
+        else if (other.tag == "Sol")
+        {
+            jumpEnable = true;
+        }
+        else if (other.tag == "platform")
+        {
+            jumpEnable = true;
+            gameObject.transform.SetParent(other.transform);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Sol")
+        {
+            jumpEnable=true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        gameObject.transform.SetParent(null);
     }
 
     private void moveForward()
@@ -157,10 +189,12 @@ public class CharacterController : MonoBehaviour
         }
         else if (actualRotation.eulerAngles.y == 0)
         {
+            movementEnable = true;
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
             endPosition += transform.forward * distanceSaut;
+            endPosition += transform.up * hauteurSaut;
             jumpEnable = false;
             animator.Play("saut");
         }
@@ -218,10 +252,12 @@ public class CharacterController : MonoBehaviour
         }
         else if (actualRotation.eulerAngles.y == 180)
         {
+            movementEnable = true;
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
             endPosition += transform.forward * distanceSaut;
+            endPosition += transform.up * hauteurSaut;
             jumpEnable = false;
             animator.Play("saut");
         }
@@ -278,12 +314,14 @@ public class CharacterController : MonoBehaviour
         }
         else if (actualRotation.eulerAngles.y == 90)
         {
-             oldPosition = transform.position;
-             elapsedTime = 0;
-             endPosition = transform.position;
-             endPosition += transform.forward * distanceSaut;
-             jumpEnable = false;
-             animator.Play("saut");
+            movementEnable = true;
+            oldPosition = transform.position;
+            elapsedTime = 0;
+            endPosition = transform.position;
+            endPosition += transform.forward * distanceSaut;
+            endPosition += transform.up * hauteurSaut;
+            jumpEnable = false;
+            animator.Play("saut");
         }
     }
 
@@ -338,10 +376,12 @@ public class CharacterController : MonoBehaviour
         }
         else if (actualRotation.eulerAngles.y == 270)
         {
+            movementEnable = true;
             oldPosition = transform.position;
             elapsedTime = 0;
             endPosition = transform.position;
             endPosition += transform.forward * distanceSaut;
+            endPosition += transform.up * hauteurSaut;
             jumpEnable = false;
             animator.Play("saut");
         }
