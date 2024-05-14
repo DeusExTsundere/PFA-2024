@@ -1,0 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class voiture : MonoBehaviour
+{
+    [SerializeField] private int speed = 2;
+    private Quaternion rotation;
+
+    private void Start()
+    {
+        rotation = transform.rotation;
+
+        if (transform.position.x > 0)
+        {
+            rotation.y = 180;
+            transform.rotation = rotation;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        transform.position += transform.right * speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Destroy(gameObject);
+    }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
+}

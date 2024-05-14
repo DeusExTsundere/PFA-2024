@@ -12,19 +12,22 @@ public class levelSelect : MonoBehaviour
 
     public void easy()
     {
-        difficulty = 1;
+        difficulty = 6;
+        PlayerPrefs.SetInt("difficulty",difficulty);
         SceneManager.LoadScene(gameStart);
     }
 
     public void normal()
     {
         difficulty = 3;
+        PlayerPrefs.SetInt("difficulty", difficulty);
         SceneManager.LoadScene(gameStart);
     }
 
     public void hard() 
     { 
-        difficulty = 6;
+        difficulty = 1;
+        PlayerPrefs.SetInt("difficulty", difficulty);
         SceneManager.LoadScene(gameStart);
     }
 

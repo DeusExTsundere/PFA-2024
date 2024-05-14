@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class settingsMenu : MonoBehaviour
 {
-    
+    private KeyCode forward;
+    private KeyCode backward;
+    private KeyCode left;
+    private KeyCode right;
+
     void Start()
     {
         
@@ -15,4 +19,6 @@ public class settingsMenu : MonoBehaviour
     {
         
     }
+
+
 }

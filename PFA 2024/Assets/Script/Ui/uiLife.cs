@@ -11,12 +11,9 @@ public class uiLife : MonoBehaviour
     private void Awake()
     {
         life = GetComponent<TextMeshProUGUI>();
-        life.SetText("Point de Vie : " + character.PointDeVie);        
+        life.SetText("Point de Vie : " + character.PointDeVie);
     }
 
-
-
-    // Update is called once per frame
     void Update()
     {
         life.SetText("Point de Vie : " + character.PointDeVie);
