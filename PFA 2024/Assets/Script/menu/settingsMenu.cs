@@ -4,21 +4,17 @@ using UnityEngine;
 
 public class settingsMenu : MonoBehaviour
 {
-    private KeyCode forward;
-    private KeyCode backward;
-    private KeyCode left;
-    private KeyCode right;
-
-    void Start()
+    [SerializeField] private GameObject soundSettings;
+    [SerializeField] private GameObject controlSettings;
+    public void SoundClick()
     {
-        
+        soundSettings.SetActive(true);
+        gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SettingsClick()
     {
-        
+        controlSettings.SetActive(true);
+        gameObject.SetActive(false);
     }
-
-
 }

@@ -7,7 +7,7 @@ public class spawnPlatform : MonoBehaviour
     [SerializeField] private GameObject[] platform;
     private bool spawnEnable=true;
     private int randomPlatform=1;
-    private float spawnTime = 7f;
+    private float spawnTime;
     private float chrono;
 
     void Update()
@@ -19,7 +19,7 @@ public class spawnPlatform : MonoBehaviour
             {
                 chrono = 0;
                 Instantiate(platform[randomPlatform],transform.position, Quaternion.identity);
-                spawnTime = Random.Range(3.5f, 10);
+                spawnTime = Random.Range(2.5f, 10);
                 spawnEnable = false;
                 randomPlatform = Random.Range(0, platform.Length);
             }

@@ -5,21 +5,32 @@ using UnityEngine;
 public class spawnVehicle : MonoBehaviour
 {
     [SerializeField]private GameObject voiture ;
-    private float timer = 5f;
+    [SerializeField, Range(1, 8)] private int spawnDelaiMax = 8;
+    [SerializeField, Range(1, 8)] private int spawnDelaiMin = 1;
+    private bool spawnable = true;
+    private float timer;
     private float chrono;
 
     void Update()
     {
-        chrono += Time.deltaTime;
-        if ( chrono >= timer )
+        if (spawnable)
         {
-            chrono = 0;
-            Instantiate(voiture,transform.position, Quaternion.identity);
-            timer = Random.Range(3 ,7.5f);
+            chrono += Time.deltaTime;
+            if (chrono >= timer)
+            {
+                chrono = 0;
+                Instantiate(voiture, transform.position, Quaternion.identity);
+                timer = Random.Range(spawnDelaiMin,spawnDelaiMax);
+                spawnable = false;
+            }
         }
     }
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        spawnable = true;
     }
 }

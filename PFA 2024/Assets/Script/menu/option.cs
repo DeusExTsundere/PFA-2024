@@ -25,7 +25,7 @@ public class option : MonoBehaviour
     private float tempoDesactivation = 1f;
     private bool mainMenuEnabled = true;
     private bool settingsMenuEnabled = false;
-    private bool creditsMenuEnabled = true;
+    private bool creditsMenuEnabled = false;
     private bool difficultyMenuEnabled = false;
 
     private void Start()

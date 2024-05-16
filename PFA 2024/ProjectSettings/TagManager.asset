@@ -4,12 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Sol
-  - Arbre
-  - vehicle
-  - eau
-  - checkpoint
-  - platform
+  - victoire
   layers:
   - Default
   - TransparentFX

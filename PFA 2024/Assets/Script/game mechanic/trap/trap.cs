@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class trap : MonoBehaviour
 {
-    [SerializeField, Range(0, 3)] private int damage = 1;
+    [SerializeField, Range(0, 6)] private int damage = 1;
     public int lifeMinus { get { return damage; } }
 
     [SerializeField] private bool respawn = true;
