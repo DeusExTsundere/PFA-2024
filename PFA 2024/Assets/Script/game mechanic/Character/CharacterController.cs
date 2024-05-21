@@ -166,6 +166,10 @@ public class CharacterController : MonoBehaviour
             elapsedTime = 10f;
 
         }
+        if (isGrounded == true)
+        {
+            rigid.isKinematic = true;
+        }
     }
     private void OnTriggerStay(Collider other)
     {

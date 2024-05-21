@@ -8,7 +8,8 @@ public class pause : MonoBehaviour
     private string currentScene;
     [SerializeField] private string menu;
     [SerializeField] private GameObject[] pauseButton;
-    [SerializeField] private GameObject[] settingssButton;
+    [SerializeField] private GameObject[] settingsButton;
+    [SerializeField] private GameObject soundSettings;
     [SerializeField] private GameObject exitSettings;
 
     private void Start()
@@ -39,11 +40,30 @@ public class pause : MonoBehaviour
         {
             pauseButton[i].SetActive(false);
         }
-        for (int i = 0;i < settingssButton.Length; i++)
+        for (int i = 0;i < settingsButton.Length; i++)
         {
-            settingssButton[i].SetActive(true);
+            settingsButton[i].SetActive(true);
         }
         exitSettings.SetActive(true);
+    }
+
+    public void soundClick()
+    {
+        soundSettings.SetActive(true);
+        for (int i = 0; i < settingsButton.Length; i++)
+        {
+            settingsButton[i].SetActive(false);
+        }
+    }
+
+    public void backSound()
+    {
+        soundSettings.SetActive(false);
+        for (int i = 0; i < settingsButton.Length; i++)
+        {
+            settingsButton[i].SetActive(true);
+
+        }
     }
 
     public void ExitSettings()
@@ -52,9 +72,9 @@ public class pause : MonoBehaviour
         {
             pauseButton[i].SetActive(true);
         }
-        for (int i = 0; i < settingssButton.Length; i++)
+        for (int i = 0; i < settingsButton.Length; i++)
         {
-            settingssButton[i].SetActive(false);
+            settingsButton[i].SetActive(false);
         }
         exitSettings.SetActive(false);
     }
