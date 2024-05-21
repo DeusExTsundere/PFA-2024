@@ -13,7 +13,10 @@ public class CharacterController : MonoBehaviour
     private bool paused = false;
     private bool finished = false;
     public bool IsFinished { get { return finished; } }
-    private float elapsedTime;
+    private float rotationComplete;
+    private float moveComplete;
+    private float elapsedTimeMove;
+    private float elapsedTimeRotation;
     private float rotationSpeed;
     private int vie = 3;
     public int PointDeVie {get {return vie;}}
@@ -48,27 +51,28 @@ public class CharacterController : MonoBehaviour
 
         if (movementEnable == true)
         {
-            if (Input.GetKey(forward))
+            if (Input.GetKeyDown(forward))
             {
                 MoveForward();
             }
-            else if (Input.GetKey(backward))
+            else if (Input.GetKeyDown(backward))
             {
                 MoveBack();
             }
-            else if (Input.GetKey(turnRight))
+            else if (Input.GetKeyDown(turnRight))
             {
                 MoveRight();
             }
-            else if (Input.GetKey(turnLeft))
+            else if (Input.GetKeyDown(turnLeft))
             {
                 MoveLeft();
             }
         }
 
-        elapsedTime += Time.deltaTime;
-        float rotationComplete = elapsedTime / rotationSpeed;
-        float percentageComplete = elapsedTime / inputTime;
+        elapsedTimeMove += Time.deltaTime;
+        elapsedTimeRotation += Time.deltaTime;
+        rotationComplete = elapsedTimeRotation / rotationSpeed;
+        moveComplete = elapsedTimeMove / inputTime;
 
         if (finished == false && paused == false)
         {
@@ -83,11 +87,11 @@ public class CharacterController : MonoBehaviour
                     paused= true;
                 }
 
-                if (percentageComplete <= 1)
+                if (moveComplete <= 1)
                 {
-                    transform.position = Vector3.Lerp(transform.position, endPosition, percentageComplete);
+                    transform.position = Vector3.Lerp(transform.position, endPosition, moveComplete);
                 }
-                else if (percentageComplete >= 1)
+                else if (moveComplete >= 1)
                 {
                     movementEnable = true;
                     if (isGrounded == false)
@@ -149,7 +153,7 @@ public class CharacterController : MonoBehaviour
             if (obstacle.getTrough == false)
             {
                 endPosition -= transform.forward * distanceSaut;
-                elapsedTime = 0f;
+                elapsedTimeRotation = 0f;
             }
         }
         else if (other.TryGetComponent(out trap trap))
@@ -158,12 +162,12 @@ public class CharacterController : MonoBehaviour
             if (trap.spawn == true)
             {
                 StartCoroutine(death());
-                elapsedTime = 0f;
+                elapsedTimeRotation = 0f;
             }
         }
         else if (other.TryGetComponent(out platform platform))
         {
-            elapsedTime = 10f;
+            elapsedTimeRotation = 10f;
 
         }
         if (isGrounded == true)
@@ -217,7 +221,7 @@ public class CharacterController : MonoBehaviour
            }
             currentDirection = Direction.front;
         }
-        elapsedTime=0f;
+        elapsedTimeRotation=0f;
         newRotation.y = 0f;
     }
 
@@ -245,7 +249,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         newRotation.y = 180f;
-        elapsedTime=0f;
+        elapsedTimeRotation=0f;
         currentDirection = Direction.back;
     }
 
@@ -273,7 +277,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         newRotation.y = 90f;
-        elapsedTime=0f;
+        elapsedTimeRotation=0f;
         currentDirection = Direction.right;
     }
 
@@ -301,13 +305,13 @@ public class CharacterController : MonoBehaviour
             }
         }
         newRotation.y = 270f;
-        elapsedTime=0f;
+        elapsedTimeRotation=0f;
         currentDirection = Direction.left;
     }
 
     private void TransformForward()
     {
-        elapsedTime = 0f;
+        elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition += transform.forward * distanceSaut;
     }

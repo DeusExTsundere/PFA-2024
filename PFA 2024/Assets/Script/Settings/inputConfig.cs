@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class unputConfig : MonoBehaviour
+public class inputConfig : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private KeyCode keyForward;
+    private KeyCode keyBackward;
+    private KeyCode keyRight;
+    private KeyCode keyLeft;
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

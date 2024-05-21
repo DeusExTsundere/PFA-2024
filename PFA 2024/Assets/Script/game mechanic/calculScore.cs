@@ -6,36 +6,56 @@ public class calculScore : MonoBehaviour
 {
     [SerializeField]private CharacterController character;
     private int score;
+    public int endScore { get { return score; } }
     private int difficulty;
     private int nbVie;
-    private float multiplicator;
+    private int multiplicator;
+    private bool calcul = true;
+    private bool end;
 
-    void Start()
+    private void Start()
     {
         difficulty = PlayerPrefs.GetInt("difficulty");
         if (difficulty == 1)
         {
-            multiplicator = 1.15f;
+            multiplicator = 115;
+            score += 500; 
         }
         else if (difficulty == 6)
         {
-            multiplicator = 0.85f;
+            multiplicator = 85;
         }
         else
         {
-            multiplicator = 1;
+            multiplicator = 100;
+            score += 200;
         }
         nbVie = character.PointDeVie;
     }
 
     private void Update()
     {
-        
+        if (end == false)
+        {
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         nbVie = character.PointDeVie;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "victoire" && calcul == true)
+        {
+            end = character.IsFinished;
+            nbVie = character.PointDeVie;
+            score += nbVie * 100;
+            score = score * multiplicator;
+            calcul = false;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
