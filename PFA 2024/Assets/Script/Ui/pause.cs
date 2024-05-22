@@ -78,4 +78,17 @@ public class pause : MonoBehaviour
         }
         exitSettings.SetActive(false);
     }
+
+    private void OnDisable()
+    {
+        for (int i = 0; i < pauseButton.Length; i++)
+        {
+            pauseButton[i].SetActive(true);
+        }
+        for (int i = 0; i < settingsButton.Length; i++)
+        {
+            settingsButton[i].SetActive(false);
+        }
+        exitSettings.SetActive(false);
+    }
 }

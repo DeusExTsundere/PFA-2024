@@ -7,35 +7,44 @@
             "actions": [
                 {
                     "name": "Forward",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b2e0101a-773f-4e15-80b1-294f6027120f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Backward",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "27b2ee84-a51a-4875-a7be-5b0569fd6352",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Right",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "2f6fb9c5-77a8-4630-931b-d98822cb6e1b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Left",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b5c8f17a-c6b5-4b00-844f-68f34cacb00f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "7e4e5720-ade3-429a-9a04-8549e127c899",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -68,7 +77,7 @@
                 {
                     "name": "up",
                     "id": "e2062cb9-1b15-46a2-838c-2f8d72a0bdd9",
-                    "path": "<Keyboard>/z",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -94,6 +103,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a07045fd-b33f-48a9-87f0-a2d62bbf1990",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -149,6 +169,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Joystick",
+                    "action": "Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fed0331f-3407-45c7-9e30-f0e2c2f60065",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Backward",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -231,6 +262,17 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "",
+                    "id": "d89895c6-72cc-457f-94d7-36c0ce21d0b3",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "Q",
                     "id": "a80a1252-b9b2-43c5-8857-136441431b1d",
                     "path": "Dpad",
@@ -244,7 +286,7 @@
                 {
                     "name": "left",
                     "id": "c3163bcd-0793-4197-855e-f453aa2cf6a1",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -262,6 +304,39 @@
                     "action": "Left",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "96d5e0fd-72a8-41e4-b210-e668bb5b7bdf",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3bdb54db-25f3-45fa-9ac4-666c39c2a315",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4eda1cbf-6754-4724-a0ae-fac059134531",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

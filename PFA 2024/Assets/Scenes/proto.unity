@@ -1495,7 +1495,7 @@ MonoBehaviour:
       - m_Target: {fileID: 442890287}
         m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
         m_MethodName: MoveForward
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1551,7 +1551,7 @@ MonoBehaviour:
       - m_Target: {fileID: 442890287}
         m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
         m_MethodName: MoveBack
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1567,7 +1567,7 @@ MonoBehaviour:
       - m_Target: {fileID: 442890287}
         m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
         m_MethodName: MoveRight
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1583,7 +1583,7 @@ MonoBehaviour:
       - m_Target: {fileID: 442890287}
         m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
         m_MethodName: MoveLeft
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1594,6 +1594,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: b5c8f17a-c6b5-4b00-844f-68f34cacb00f
     m_ActionName: Player/Left[/Keyboard/q,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 442890287}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: Paused
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7e4e5720-ade3-429a-9a04-8549e127c899
+    m_ActionName: Player/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

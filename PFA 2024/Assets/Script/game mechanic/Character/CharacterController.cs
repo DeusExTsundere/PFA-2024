@@ -65,10 +65,6 @@ public class CharacterController : MonoBehaviour
             {
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    paused= true;
-                }
 
                 if (moveComplete <= 1)
                 {
@@ -98,14 +94,6 @@ public class CharacterController : MonoBehaviour
             victoryUI.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-        }
-        else if (paused == true)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0f;
-            pauseMenu.SetActive(true);
-            ui.SetActive(false);
         }
         if (vie <= 0)
         {
@@ -180,8 +168,40 @@ public class CharacterController : MonoBehaviour
     {
         isGrounded = false;
     }
-    public void MoveForward()
+
+    public void Paused(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
+            if (isAlive)
+            {
+                paused = !paused;
+            }
+            if (paused == true)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                Time.timeScale = 0f;
+                pauseMenu.SetActive(true);
+                ui.SetActive(false);
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Time.timeScale = 1f;
+                pauseMenu.SetActive(false);
+                ui.SetActive(true);
+
+            }
+        }
+    }
+   
+
+    public void MoveForward(InputAction.CallbackContext context)
+    {
+        if (context.started) 
+        {
             movementEnable = false;
             if ((endPosition.z + distanceSaut) >= 48)
             {
@@ -206,90 +226,101 @@ public class CharacterController : MonoBehaviour
             }
             elapsedTimeRotation = 0f;
             newRotation.y = 0f;
+        }
     }
 
-    public void MoveBack()
+    public void MoveBack(InputAction.CallbackContext context)
     {
-        movementEnable = false;
-        newRotation = transform.rotation.eulerAngles;
-        if ((endPosition.z - distanceSaut) <= -5)
+        if (context.started)
         {
-            return;
-        }
-        if (currentDirection == Direction.back)
-        {
-            TransformForward();
-        }
-        else
-        {
-            if (currentDirection == Direction.front)
+            movementEnable = false;
+            newRotation = transform.rotation.eulerAngles;
+            if ((endPosition.z - distanceSaut) <= -5)
             {
-                rotationSpeed = inputTime * 1.5f;
+                return;
+            }
+            if (currentDirection == Direction.back)
+            {
+                TransformForward();
             }
             else
             {
-                rotationSpeed = inputTime;
+                if (currentDirection == Direction.front)
+                {
+                    rotationSpeed = inputTime * 1.5f;
+                }
+                else
+                {
+                    rotationSpeed = inputTime;
+                }
             }
+            newRotation.y = 180f;
+            elapsedTimeRotation = 0f;
+            currentDirection = Direction.back;
         }
-        newRotation.y = 180f;
-        elapsedTimeRotation=0f;
-        currentDirection = Direction.back;
     }
 
-    public void MoveRight()
+    public void MoveRight(InputAction.CallbackContext context)
     {
-        movementEnable = false;
-        newRotation = transform.rotation.eulerAngles;
-        if ((endPosition.x + distanceSaut) >= 7)
+        if (context.started)
         {
-            return;
-        }
-        if (currentDirection == Direction.right)
-        {
-            TransformForward();
-        }
-        else
-        {
-            if (currentDirection == Direction.left)
+            movementEnable = false;
+            newRotation = transform.rotation.eulerAngles;
+            if ((endPosition.x + distanceSaut) >= 7)
             {
-                rotationSpeed = inputTime * 1.5f;
+                return;
             }
-            else
-            {
-                rotationSpeed = inputTime;
-            }
-        }
-        newRotation.y = 90f;
-        elapsedTimeRotation=0f;
-        currentDirection = Direction.right;
-    }
-
-    public void MoveLeft()
-    {
-        movementEnable = false;
-        newRotation = transform.rotation.eulerAngles;
-        if ((endPosition.x - distanceSaut) <= -7)
-        {
-            return;
-        }
-        if (currentDirection == Direction.left)
-        {
-            TransformForward();
-        }
-        else
-        {
             if (currentDirection == Direction.right)
             {
-                rotationSpeed = inputTime * 1.5f;
+                TransformForward();
             }
             else
             {
-                rotationSpeed = inputTime;
+                if (currentDirection == Direction.left)
+                {
+                    rotationSpeed = inputTime * 1.5f;
+                }
+                else
+                {
+                    rotationSpeed = inputTime;
+                }
             }
+            newRotation.y = 90f;
+            elapsedTimeRotation = 0f;
+            currentDirection = Direction.right;
         }
-        newRotation.y = 270f;
-        elapsedTimeRotation=0f;
-        currentDirection = Direction.left;
+    }
+
+    public void MoveLeft(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            movementEnable = false;
+            newRotation = transform.rotation.eulerAngles;
+            if ((endPosition.x - distanceSaut) <= -7)
+            {
+                return;
+            }
+            if (currentDirection == Direction.left)
+            {
+                TransformForward();
+            }
+            else
+            {
+                if (currentDirection == Direction.right)
+                {
+                    rotationSpeed = inputTime * 1.5f;
+                }
+                else
+                {
+                    rotationSpeed = inputTime;
+                }
+            }
+            newRotation.y = 270f;
+            elapsedTimeRotation = 0f;
+            currentDirection = Direction.left;
+        }
+
     }
 
     private void TransformForward()
