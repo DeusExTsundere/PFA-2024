@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour 
 {
@@ -7,6 +8,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 respawn;
     private Vector3 newRotation;
     private Vector3 endPosition;
+    private Vector2 direction;
     private bool isGrounded = false;
     private bool isAlive = true;
     private bool movementEnable = true;
@@ -35,6 +37,8 @@ public class CharacterController : MonoBehaviour
     [Header("Configuration")]
     [SerializeField, Range(0, 1.5f)] private float inputTime = 0.5f;
     [SerializeField] private float distanceSaut = 1.5f;
+
+    [SerializeField] private CharacterController characterController;
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();
@@ -48,27 +52,6 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-
-        if (movementEnable == true)
-        {
-            if (Input.GetKeyDown(forward))
-            {
-                MoveForward();
-            }
-            else if (Input.GetKeyDown(backward))
-            {
-                MoveBack();
-            }
-            else if (Input.GetKeyDown(turnRight))
-            {
-                MoveRight();
-            }
-            else if (Input.GetKeyDown(turnLeft))
-            {
-                MoveLeft();
-            }
-        }
-
         elapsedTimeMove += Time.deltaTime;
         elapsedTimeRotation += Time.deltaTime;
         rotationComplete = elapsedTimeRotation / rotationSpeed;
@@ -161,7 +144,7 @@ public class CharacterController : MonoBehaviour
             vie -= trap.lifeMinus;
             if (trap.spawn == true)
             {
-                StartCoroutine(death());
+                StartCoroutine(Death());
                 elapsedTimeRotation = 0f;
             }
         }
@@ -197,35 +180,35 @@ public class CharacterController : MonoBehaviour
     {
         isGrounded = false;
     }
-    private void MoveForward()
+    public void MoveForward()
     {
-        movementEnable = false;
-        if ((endPosition.z + distanceSaut) >= 48)
-        {
-            return;
-        }
-        newRotation = transform.rotation.eulerAngles;
-        if (currentDirection == Direction.front) 
-        {
-            TransformForward();
-        }
-        else
-        {
-           if (currentDirection == Direction.back)
-           {
-                rotationSpeed = inputTime * 1.5f;
-           }
-           else 
-           {
-                rotationSpeed = inputTime;
-           }
-            currentDirection = Direction.front;
-        }
-        elapsedTimeRotation=0f;
-        newRotation.y = 0f;
+            movementEnable = false;
+            if ((endPosition.z + distanceSaut) >= 48)
+            {
+                return;
+            }
+            newRotation = transform.rotation.eulerAngles;
+            if (currentDirection == Direction.front)
+            {
+                TransformForward();
+            }
+            else
+            {
+                if (currentDirection == Direction.back)
+                {
+                    rotationSpeed = inputTime * 1.5f;
+                }
+                else
+                {
+                    rotationSpeed = inputTime;
+                }
+                currentDirection = Direction.front;
+            }
+            elapsedTimeRotation = 0f;
+            newRotation.y = 0f;
     }
 
-    private void MoveBack()
+    public void MoveBack()
     {
         movementEnable = false;
         newRotation = transform.rotation.eulerAngles;
@@ -253,7 +236,7 @@ public class CharacterController : MonoBehaviour
         currentDirection = Direction.back;
     }
 
-    private void MoveRight()
+    public void MoveRight()
     {
         movementEnable = false;
         newRotation = transform.rotation.eulerAngles;
@@ -281,7 +264,7 @@ public class CharacterController : MonoBehaviour
         currentDirection = Direction.right;
     }
 
-    private void MoveLeft()
+    public void MoveLeft()
     {
         movementEnable = false;
         newRotation = transform.rotation.eulerAngles;
@@ -322,11 +305,22 @@ public class CharacterController : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    IEnumerator death()
+    IEnumerator Death()
     {
         yield return new WaitForSeconds(0.75f);
         transform.position = respawn;
     }
+
+    //public void Move(InputAction.CallbackContext context)
+    //{
+    //    if (context.started)
+    //    {
+    //        direction = context.ReadValue<Vector2>();
+    //        transform.position += new Vector3(direction.x,0,direction.y);
+
+    //        //if (context.ReadValue<Vector2>().ba)
+    //    }
+    //}
 }
 
 enum Direction

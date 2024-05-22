@@ -12,6 +12,7 @@ public class calculScore : MonoBehaviour
     private int multiplicator;
     private bool calcul = true;
     private bool end;
+    leaderboard leaderboard;
 
     private void Start()
     {
@@ -60,5 +61,10 @@ public class calculScore : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         nbVie = character.PointDeVie;
+    }
+
+    private void Scoring()
+    {
+        leaderboard.Score.Add(score);
     }
 }
