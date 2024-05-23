@@ -38,7 +38,7 @@ public class volume : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MasterVolume",masterVolume);
         PlayerPrefs.SetFloat("fxVolume",fxVolume);
-        PlayerPrefs.SetFloat("soundVolume", soundVolume);   
+        PlayerPrefs.SetFloat("soundVolume", soundVolume);
     }
 
     public void Back()

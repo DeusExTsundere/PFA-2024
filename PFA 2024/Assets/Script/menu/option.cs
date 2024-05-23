@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class option : MonoBehaviour
@@ -15,11 +16,17 @@ public class option : MonoBehaviour
     [SerializeField] private GameObject setting;
     [SerializeField] private CanvasGroup creditsMenu;
     [Header("Settings Menu")]
+    [SerializeField] private GameObject soundSettings;
     [SerializeField] private CanvasGroup soundMenu;
     [SerializeField] private CanvasGroup controleMenu;
     [Header("Difficulty Menu")]
     [SerializeField] private CanvasGroup difficultyMenu;
     [SerializeField] private GameObject difficulty;
+    [Header("Paramétrage")]
+    [SerializeField] private GameObject defaultDifficulty;
+    [SerializeField] private GameObject defaultMenuButton;
+    [SerializeField] private GameObject optionButton;
+    [SerializeField] private GameObject mainSoundBar;
 
     private float tempo = 0.9f;
     private float tempoDesactivation = 1f;
@@ -27,6 +34,7 @@ public class option : MonoBehaviour
     private bool settingsMenuEnabled = false;
     private bool creditsMenuEnabled = false;
     private bool difficultyMenuEnabled = false;
+    private bool soundMenuEnabled = false;
 
     private void Start()
     {
@@ -59,7 +67,7 @@ public class option : MonoBehaviour
                 settingsMenu.alpha += Time.deltaTime;
             }
         }
-        else if (settingsMenuEnabled == false)
+        else if (settingsMenuEnabled == false  && soundMenuEnabled == false)
         {
             if (settingsMenu.alpha > 0)
             {
@@ -118,52 +126,90 @@ public class option : MonoBehaviour
             menu.SetActive(true);
             mainMenuEnabled = true;
         }
+
+        if (soundMenuEnabled)
+        {
+            if (soundMenu.alpha < 1)
+            {
+                soundMenu.alpha += Time.deltaTime;
+                settingsMenu.alpha -= Time.deltaTime; 
+            }
+        }
+        else if (soundMenuEnabled == false)
+        {
+            if (soundMenu.alpha > 0)
+            {
+
+                soundMenu.alpha -= Time.deltaTime;
+            }
+        }
     }
 
 
-    public void startClick()
+    public void StartClick()
     {
         mainMenuEnabled = false;
-        StartCoroutine(startTempo());
+        StartCoroutine(StartTempo());
+        EventSystem.current.SetSelectedGameObject(defaultDifficulty);
     }
 
-    public void backMenu()
+    public void BackMenu()
     {
         difficulty.SetActive(true);
         difficultyMenuEnabled = false;
-        StartCoroutine(backMenuTempo());
+        StartCoroutine(BackMenuTempo());
+        EventSystem.current.SetSelectedGameObject(defaultMenuButton); ;
     }
 
-    public void optionClick()
+    public void SoundClick()
+    {
+        soundMenuEnabled = !soundMenuEnabled;
+        soundSettings.SetActive(true);
+        StartCoroutine(SoundClickTempo());
+        EventSystem.current.SetSelectedGameObject(mainSoundBar);
+    }
+
+    public void SoundExit()
+    {
+        soundMenuEnabled = !soundMenuEnabled;
+        setting.SetActive(true);
+        StartCoroutine(SoundExitTempo());
+        EventSystem.current.SetSelectedGameObject(setting);
+    }
+
+    public void OptionClick()
     {
         mainMenuEnabled = false;
-        StartCoroutine(optionClickTempo());
+        StartCoroutine(OptionClickTempo());
+        EventSystem.current.SetSelectedGameObject(optionButton);
     }
 
-    public void optionBack()
+    public void OptionBack()
     {
         menu.SetActive(true);
         settingsMenuEnabled = false;
-        StartCoroutine(optionBackTempo());
+        StartCoroutine(OptionBackTempo());
+        EventSystem.current.SetSelectedGameObject(defaultMenuButton);
     }
 
-    public void creditClick()
+    public void CreditClick()
     {
         mainMenuEnabled = false;
-        StartCoroutine(creditClickTempo());
+        StartCoroutine(CreditClickTempo());
     }
 
-    public void exitCreditMenu()
+    public void ExitCreditMenu()
     {
         creditsMenuEnabled = false;
+        EventSystem.current.SetSelectedGameObject(defaultMenuButton);
     }
 
-    public void exitClick()
+    public void ExitClick()
     {
         Application.Quit();
     }
 
-    IEnumerator startTempo()
+    IEnumerator StartTempo()
     {
         yield return new WaitForSeconds(tempo);
         difficulty.SetActive(true);
@@ -172,7 +218,7 @@ public class option : MonoBehaviour
         menu.SetActive(false);
     }
 
-    IEnumerator backMenuTempo()
+    IEnumerator BackMenuTempo()
     {
         yield return new WaitForSeconds(tempo);
         difficulty.SetActive(false);
@@ -180,7 +226,7 @@ public class option : MonoBehaviour
         mainMenuEnabled = true;
     }
 
-    IEnumerator optionClickTempo()
+    IEnumerator OptionClickTempo()
     {
         yield return new WaitForSeconds(tempo);
         menu.SetActive(false);
@@ -188,7 +234,7 @@ public class option : MonoBehaviour
         settingsMenuEnabled = true;
     }
 
-    IEnumerator optionBackTempo()
+    IEnumerator OptionBackTempo()
     {
         menu.SetActive(true);
         yield return new WaitForSeconds(tempo);
@@ -196,10 +242,24 @@ public class option : MonoBehaviour
         mainMenuEnabled = true;
     }
 
-    IEnumerator creditClickTempo()
+    IEnumerator CreditClickTempo()
     {
         yield return new WaitForSeconds(tempo);
         menu.SetActive(false);
         creditsMenuEnabled = true;
+    }
+
+    IEnumerator SoundClickTempo()
+    {
+        settingsMenuEnabled = false;
+        yield return new WaitForSeconds(tempo);
+        setting.SetActive(false);
+    }
+
+    IEnumerator SoundExitTempo()
+    {
+        settingsMenuEnabled = true;
+        yield return new WaitForSeconds(tempo);
+        setting.SetActive(true);
     }
 }

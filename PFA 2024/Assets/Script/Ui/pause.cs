@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class pause : MonoBehaviour
@@ -11,6 +12,8 @@ public class pause : MonoBehaviour
     [SerializeField] private GameObject[] settingsButton;
     [SerializeField] private GameObject soundSettings;
     [SerializeField] private GameObject exitSettings;
+    [SerializeField] private GameObject resumeButton;
+
 
     private void Start()
     {
@@ -45,6 +48,7 @@ public class pause : MonoBehaviour
             settingsButton[i].SetActive(true);
         }
         exitSettings.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(exitSettings);
     }
 
     public void soundClick()
@@ -77,18 +81,20 @@ public class pause : MonoBehaviour
             settingsButton[i].SetActive(false);
         }
         exitSettings.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(resumeButton);
     }
 
     private void OnDisable()
     {
-        for (int i = 0; i < pauseButton.Length; i++)
-        {
-            pauseButton[i].SetActive(true);
-        }
         for (int i = 0; i < settingsButton.Length; i++)
         {
             settingsButton[i].SetActive(false);
         }
+        for (int i = 0; i < pauseButton.Length; i++)
+        {
+            pauseButton[i].SetActive(true);
+        }
+        soundSettings.SetActive(false);
         exitSettings.SetActive(false);
     }
 }

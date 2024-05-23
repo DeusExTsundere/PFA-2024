@@ -15,4 +15,4 @@ EditorBuildSettings:
     path: Assets/Scenes/proto.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
-    com.unity.input.settings: {fileID: 11400000, guid: 0ab8fb78ef7466c4ca50647998f51c30, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 0d4c39c5e04e63943acb3ec544891933, type: 2}

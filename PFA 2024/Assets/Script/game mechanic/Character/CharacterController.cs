@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour 
@@ -23,31 +24,27 @@ public class CharacterController : MonoBehaviour
     private int vie = 3;
     public int PointDeVie {get {return vie;}}
     private Direction currentDirection = Direction.none;
+    private PlayerInput input;
 
     [Header("Configuratin Menu")]
     [SerializeField] private GameObject ui;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject menuFailed;
     [SerializeField] private GameObject victoryUI;
-    [Header("Configuration Touche")]
-    [SerializeField] private KeyCode turnLeft;
-    [SerializeField] private KeyCode turnRight;
-    [SerializeField] private KeyCode forward;
-    [SerializeField] private KeyCode backward;
     [Header("Configuration")]
     [SerializeField, Range(0, 1.5f)] private float inputTime = 0.5f;
     [SerializeField] private float distanceSaut = 1.5f;
-
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private GameObject resumeButton;
     private void Start()
     {
+        input = GetComponent<PlayerInput>();
         rigid = GetComponent<Rigidbody>();
         vie = PlayerPrefs.GetInt("difficulty");
         respawn = transform.position;
         endPosition = transform.position;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     private void Update()
@@ -57,26 +54,23 @@ public class CharacterController : MonoBehaviour
         rotationComplete = elapsedTimeRotation / rotationSpeed;
         moveComplete = elapsedTimeMove / inputTime;
 
-        if (finished == false && paused == false)
+        if (finished == false)
         {
-            pauseMenu.SetActive(false);
-            ui.SetActive(true);
-            if (isAlive == true)
+            if (!isGrounded)
             {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-
+                movementEnable = false;
+                rigid.isKinematic = false;
+            }
+            if (isAlive == true && movementEnable == true)
+            {
                 if (moveComplete <= 1)
                 {
                     transform.position = Vector3.Lerp(transform.position, endPosition, moveComplete);
+                    movementEnable = false;
                 }
                 else if (moveComplete >= 1)
                 {
                     movementEnable = true;
-                    if (isGrounded == false)
-                    {
-                        rigid.isKinematic = false;
-                    }
                 }
 
                 if (rotationComplete <= 1)
@@ -129,8 +123,8 @@ public class CharacterController : MonoBehaviour
         }
         else if (other.TryGetComponent(out trap trap))
         {
-            vie -= trap.lifeMinus;
-            if (trap.spawn == true)
+            vie -= trap.LifeMinus;
+            if (trap.Spawn == true)
             {
                 StartCoroutine(Death());
                 elapsedTimeRotation = 0f;
@@ -148,6 +142,7 @@ public class CharacterController : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
+        movementEnable = true;
         isGrounded = true ;
         if (other.TryGetComponent(out platform platform))
         {
@@ -167,35 +162,9 @@ public class CharacterController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         isGrounded = false;
+        movementEnable = false;
     }
 
-    public void Paused(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if (isAlive)
-            {
-                paused = !paused;
-            }
-            if (paused == true)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 0f;
-                pauseMenu.SetActive(true);
-                ui.SetActive(false);
-            }
-            else
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                Time.timeScale = 1f;
-                pauseMenu.SetActive(false);
-                ui.SetActive(true);
-
-            }
-        }
-    }
    
 
     public void MoveForward(InputAction.CallbackContext context)
@@ -329,29 +298,52 @@ public class CharacterController : MonoBehaviour
         endPosition = transform.position;
         endPosition += transform.forward * distanceSaut;
     }
+    public void Paused(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isAlive)
+            {
+                paused = !paused;
+            }
+            if (paused == true)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                Time.timeScale = 0f;
+                pauseMenu.SetActive(true);
+                ui.SetActive(false);
+                EventSystem.current.SetSelectedGameObject(resumeButton);
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                Time.timeScale = 1f;
+                pauseMenu.SetActive(false);
+                ui.SetActive(true);
+            }
+        }
+    }
 
     public void ResumeClick()
     {
-        paused = false;
+        paused = !paused;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
+        ui.SetActive(true);
     }
 
     IEnumerator Death()
     {
+        input.DeactivateInput();
         yield return new WaitForSeconds(0.75f);
         transform.position = respawn;
+        input.ActivateInput();
     }
 
-    //public void Move(InputAction.CallbackContext context)
-    //{
-    //    if (context.started)
-    //    {
-    //        direction = context.ReadValue<Vector2>();
-    //        transform.position += new Vector3(direction.x,0,direction.y);
-
-    //        //if (context.ReadValue<Vector2>().ba)
-    //    }
-    //}
 }
 
 enum Direction
