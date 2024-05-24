@@ -1,26 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class calculScore : MonoBehaviour
 {
-    [SerializeField]private CharacterController character;
-    private int score;
-    public int endScore { get { return score; } }
+    [SerializeField] private CharacterController character;
+    private float chrono;
+    [SerializeField] private float objectif_1;
+    [SerializeField] private float objectif_2;
+    [SerializeField] private float objectif_3;
+    private TextMeshProUGUI textScore;
+    private float score = 0;
+    public float endScore 
+    { get { return score; } }
     private int difficulty;
     private int nbVie;
     private int multiplicator;
-    private bool calcul = true;
     private bool end;
     leaderboard leaderboard;
 
-    private void Start()
+    private void Awake()
     {
+        score+=PlayerPrefs.GetFloat("levelScore");
+        textScore = GetComponent<TextMeshProUGUI>();
+        nbVie = character.PointDeVie;
+        score += nbVie * 100;
         difficulty = PlayerPrefs.GetInt("difficulty");
         if (difficulty == 1)
         {
             multiplicator = 115;
-            score += 500; 
+            score += 500;
         }
         else if (difficulty == 6)
         {
@@ -31,40 +41,37 @@ public class calculScore : MonoBehaviour
             multiplicator = 100;
             score += 200;
         }
-        nbVie = character.PointDeVie;
-    }
 
-    private void Update()
-    {
-        if (end == false)
+        if (chrono >= objectif_1)
         {
-
+            score += 275;
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        nbVie = character.PointDeVie;
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.tag == "victoire" && calcul == true)
+        else if (chrono >= objectif_2)
         {
-            end = character.IsFinished;
-            nbVie = character.PointDeVie;
-            score += nbVie * 100;
-            score = score * multiplicator;
-            calcul = false;
+            score += 250;
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        nbVie = character.PointDeVie;
+
+        else if (chrono >= objectif_3)
+        {
+            score += 225;
+        }
+
+        else
+        {
+            score += 100;
+        }
+        score = score * multiplicator;
     }
 
-    private void Scoring()
+    private void Start()
     {
-        leaderboard.Score.Add(score);
+        textScore.SetText("Score : " + score);
+        PlayerPrefs.SetFloat("score", score);
     }
+
+    //private void Scoring()
+    //{
+    //    leaderboard.Score.Add(score);
+    //}
 }

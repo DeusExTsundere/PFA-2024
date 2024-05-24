@@ -85,6 +85,7 @@ public class CharacterController : MonoBehaviour
         }
         else if (finished == true)
         {
+            ui.SetActive(false);
             victoryUI.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
