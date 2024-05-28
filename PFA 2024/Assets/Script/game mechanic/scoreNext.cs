@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class calculScore : MonoBehaviour
+public class scoreNext : MonoBehaviour
 {
     [SerializeField] private GameObject nextLevel;
     [SerializeField] private CharacterController character;
@@ -14,14 +14,15 @@ public class calculScore : MonoBehaviour
     private TextMeshProUGUI textScore;
     private float chrono;
     private float score = 0;
+    private float scoreStockage = 0;
     private int difficulty;
     private int nbVie;
     private int multiplicator;
     private bool end;
-    
+
     private void Awake()
     {
-        score+=PlayerPrefs.GetFloat("levelScore");
+        score += PlayerPrefs.GetFloat("levelScore");
         textScore = GetComponent<TextMeshProUGUI>();
         nbVie = character.PointDeVie;
         score += nbVie * 100;
@@ -66,7 +67,8 @@ public class calculScore : MonoBehaviour
     private void Start()
     {
         textScore.SetText("Score : " + score);
-        PlayerPrefs.SetFloat("score", score);
+        scoreStockage = score + PlayerPrefs.GetFloat("score");
+        PlayerPrefs.SetFloat("score",scoreStockage);
         EventSystem.current.SetSelectedGameObject(nextLevel);
     }
 }

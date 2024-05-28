@@ -1193,7 +1193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 345510933}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.74, y: -2.5629764, z: -5.1898956}
+  m_LocalPosition: {x: 13.74, y: 0, z: -5.1898956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1212,7 +1212,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ecbfe9e08b99ee40abbe50fb3e8c5cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiture: {fileID: 5340910380638580410, guid: 11e7d1f672b7acc41b4f03054ab3ea2f, type: 3}
+  voiture:
+  - {fileID: 5486765209894782869, guid: 44d167dcd855c5d49bda789236e694cc, type: 3}
+  - {fileID: 1199559403701462590, guid: d57d2470d02ae1d41aa006dd93610d85, type: 3}
   spawnDelaiMax: 6
   spawnDelaiMin: 2
 --- !u!65 &345510938
@@ -1227,7 +1229,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 1, z: 1}
-  m_Center: {x: -0.5, y: 0, z: 0}
+  m_Center: {x: -0.5, y: 0.62, z: 0}
 --- !u!1 &436588835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,9 +1460,7 @@ GameObject:
   - component: {fileID: 442890281}
   - component: {fileID: 442890285}
   - component: {fileID: 442890292}
-  - component: {fileID: 442890286}
   - component: {fileID: 442890287}
-  - component: {fileID: 442890288}
   - component: {fileID: 442890290}
   - component: {fileID: 442890291}
   m_Layer: 0
@@ -1503,20 +1503,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &442890286
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442890278}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &442890287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1537,22 +1523,6 @@ MonoBehaviour:
   distanceSaut: 1.5
   characterController: {fileID: 442890287}
   resumeButton: {fileID: 436588835}
---- !u!114 &442890288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 442890278}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb4cd21601c39a4b8d81ec8ae4b28f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  character: {fileID: 442890287}
-  objectif_1: 45
-  objectif_2: 60
-  objectif_3: 75
 --- !u!114 &442890290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1697,6 +1667,54 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 7e4e5720-ade3-429a-9a04-8549e127c899
+    m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 442890287}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: CheatMod
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7895701d-cf15-4d59-a0ae-09b5136c18eb
+    m_ActionName: Player/Cheat Mod[/Keyboard/f1]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5504498}
+        m_TargetAssemblyTypeName: reset, Assembly-CSharp
+        m_MethodName: ResetLevel
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a5c3592c-f6c2-4847-b001-3958529eff54
+    m_ActionName: Player/Reset[/Keyboard/f2]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 442890287}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: ForwardAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 99a7aa3c-9017-4a19-86c0-61dd76d36b08
     m_ActionName: Player/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
@@ -1927,7 +1945,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534515311}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.41634, y: 3.6129763, z: 15.189896}
+  m_LocalPosition: {x: -1.41634, y: 0, z: 15.189896}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2599,6 +2617,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
+  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -2683,6 +2702,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &705507996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705507993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &723178873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2750,7 +2789,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ecbfe9e08b99ee40abbe50fb3e8c5cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiture: {fileID: 5340910380638580410, guid: 11e7d1f672b7acc41b4f03054ab3ea2f, type: 3}
+  voiture:
+  - {fileID: 5486765209894782869, guid: 44d167dcd855c5d49bda789236e694cc, type: 3}
+  - {fileID: 1199559403701462590, guid: d57d2470d02ae1d41aa006dd93610d85, type: 3}
   spawnDelaiMax: 7
   spawnDelaiMin: 3
 --- !u!4 &747802184
@@ -2761,7 +2802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 747802182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.5, y: -2.7629762, z: 1.7501049}
+  m_LocalPosition: {x: -10.5, y: 0, z: 1.7501049}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3547,7 +3588,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908195347}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.86, y: -4.0629764, z: 15.280104}
+  m_LocalPosition: {x: -11.86, y: 0, z: 15.280104}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3743,7 +3784,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924799608}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.02, y: -4.0629764, z: 12.770103}
+  m_LocalPosition: {x: -11.02, y: 0, z: 12.770103}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4624,7 +4665,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156908134}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.4, y: -4.0629764, z: 10.810104}
+  m_LocalPosition: {x: 15.4, y: 0, z: 10.810104}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6789,6 +6830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb4cd21601c39a4b8d81ec8ae4b28f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextLevel: {fileID: 1778373171}
   character: {fileID: 442890287}
   objectif_1: 0
   objectif_2: 0
@@ -7014,7 +7056,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 19fa9c88c6a5e7642bbc98cb347c036e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7340,7 +7382,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.50980395, g: 1, b: 0.3764706, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -7477,7 +7519,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 19fa9c88c6a5e7642bbc98cb347c036e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7932,7 +7974,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.50980395, g: 1, b: 0.3764706, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -8961,7 +9003,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.51886785, b: 0.51886785, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1

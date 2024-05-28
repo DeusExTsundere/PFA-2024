@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class reset : MonoBehaviour
@@ -11,11 +12,12 @@ public class reset : MonoBehaviour
         currentScene =  SceneManager.GetActiveScene().name;
     }
 
-    void Update()
+    public void ResetLevel(InputAction.CallbackContext context)
     {
-        if (Input.GetKey(KeyCode.F2))
+        if (context.started)
         {
             SceneManager.LoadScene(currentScene);
         }
     }
+
 }

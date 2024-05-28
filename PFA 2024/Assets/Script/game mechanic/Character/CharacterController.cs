@@ -98,13 +98,6 @@ public class CharacterController : MonoBehaviour
             ui.SetActive(false);
             menuFailed.SetActive(true);
         }
-        if (Input.GetKeyDown(KeyCode.F1)) 
-        {
-            vie = 999999999;
-            isAlive = true;
-            ui.SetActive(true);
-            menuFailed.SetActive(false);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -293,12 +286,17 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    private void TransformForward()
+
+    public void ForwardAction(InputAction.CallbackContext context)
     {
-        elapsedTimeMove = 0f;
-        endPosition = transform.position;
-        endPosition += transform.forward * distanceSaut;
+        if (context.started)
+        {
+            elapsedTimeMove = 0f;
+            endPosition = transform.position;
+            endPosition += transform.forward * distanceSaut;
+        }
     }
+
     public void Paused(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -335,6 +333,23 @@ public class CharacterController : MonoBehaviour
         Time.timeScale = 1f;
         pauseMenu.SetActive(false);
         ui.SetActive(true);
+    }
+
+    public void CheatMod(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            vie = 999999999;
+            isAlive = true;
+            ui.SetActive(true);
+            menuFailed.SetActive(false);
+        }
+    }
+    private void TransformForward()
+    {
+        elapsedTimeMove = 0f;
+        endPosition = transform.position;
+        endPosition += transform.forward * distanceSaut;
     }
 
     IEnumerator Death()
