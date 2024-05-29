@@ -289,7 +289,11 @@ public class CharacterController : MonoBehaviour
 
     public void ForwardAction(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if ((((endPosition.x + distanceSaut) >= 7) && currentDirection == Direction.right)|| (((endPosition.x - distanceSaut) <= -7 && currentDirection == Direction.left)) || (((endPosition.z - distanceSaut) <= -5) && currentDirection == Direction.back))
+        {
+            return;
+        }
+        else if (context.started)
         {
             elapsedTimeMove = 0f;
             endPosition = transform.position;

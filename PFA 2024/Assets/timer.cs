@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +5,7 @@ public class timer : MonoBehaviour
 {
     private TextMeshProUGUI chrono;
     [SerializeField] private float temps;
+    private string affichage;
 
     void Start()
     {
@@ -20,7 +19,8 @@ public class timer : MonoBehaviour
         {
             temps -= Time.deltaTime;
         }
-        chrono.SetText("Timer : " + temps);
+        int secondes = Mathf.FloorToInt(temps);
+        chrono.SetText("Timer : " + secondes );
     }
 
     private void OnDisable()
