@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class spawnVehicle : MonoBehaviour
 {
-    [SerializeField] private GameObject[] voiture ;
+    [SerializeField] private GameObject voiture ;
     [SerializeField, Range(1, 8)] private int spawnDelaiMax = 8;
     [SerializeField, Range(1, 8)] private int spawnDelaiMin = 1;
     private int voitureChoix;
@@ -19,9 +19,8 @@ public class spawnVehicle : MonoBehaviour
             chrono += Time.deltaTime;
             if (chrono >= timer)
             {
-                voitureChoix = Random.Range(0,voiture.Length);
                 chrono = 0;
-                Instantiate(voiture[voitureChoix], transform.position, Quaternion.identity);
+                Instantiate(voiture, transform.position, Quaternion.identity);
                 timer = Random.Range(spawnDelaiMin,spawnDelaiMax);
                 spawnable = false;
             }

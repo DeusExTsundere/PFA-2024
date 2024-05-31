@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8152126641244195486}
   - component: {fileID: 8152126641244195485}
   m_Layer: 0
-  m_Name: Spawn Vehicle
+  m_Name: Spawn Voiture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ecbfe9e08b99ee40abbe50fb3e8c5cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiture:
-  - {fileID: 5486765209894782869, guid: 44d167dcd855c5d49bda789236e694cc, type: 3}
-  - {fileID: 1199559403701462590, guid: d57d2470d02ae1d41aa006dd93610d85, type: 3}
+  voiture: {fileID: 0}
   spawnDelaiMax: 6
   spawnDelaiMin: 2
 --- !u!65 &8152126641244195485
