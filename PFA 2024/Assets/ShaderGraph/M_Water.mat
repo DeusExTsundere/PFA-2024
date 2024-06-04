@@ -52,7 +52,7 @@ Material:
     - _Speed: {r: 0, g: 0, b: 0, a: 0}
     - _TexColor: {r: 0, g: 0.08931833, b: 0.46107566, a: 1}
     - _Tiling: {r: 0.74, g: 1, b: 0, a: 0}
-    - _VoronoiColor: {r: 1.1394478, g: 1.2383842, b: 2.7141902, a: 1}
+    - _VoronoiColor: {r: 0.32005852, g: 0.4807981, b: 2.9079633, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3234934972821189443
 MonoBehaviour:

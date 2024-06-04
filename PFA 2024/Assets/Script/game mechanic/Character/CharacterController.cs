@@ -5,10 +5,12 @@ using UnityEngine.InputSystem;
 
 public class CharacterController : MonoBehaviour 
 {
+    private Ray raycast;
     private Rigidbody rigid;
     private Vector3 respawn;
     private Vector3 newRotation;
     private Vector3 endPosition;
+    private Vector3 oldDirection;
     private Vector2 direction;
     private bool isGrounded = false;
     private bool isAlive = true;
@@ -108,7 +110,7 @@ public class CharacterController : MonoBehaviour
             finished = true;
         }
         if (other.TryGetComponent(out obstacle obstacle))
-        {
+        {   
             if (obstacle.getTrough == false)
             {
                 endPosition -= transform.forward * distanceSaut;
@@ -128,6 +130,10 @@ public class CharacterController : MonoBehaviour
         {
             elapsedTimeRotation = 10f;
 
+        }
+        else if (other.TryGetComponent(out centerObject centerObject))
+        {
+            endPosition = centerObject.center;
         }
         if (isGrounded == true)
         {
@@ -163,7 +169,7 @@ public class CharacterController : MonoBehaviour
 
     public void MoveForward(InputAction.CallbackContext context)
     {
-        if (context.started) 
+        if (context.started && movementEnable) 
         {
             movementEnable = false;
             if ((endPosition.z + distanceSaut) >= 48)
@@ -194,7 +200,7 @@ public class CharacterController : MonoBehaviour
 
     public void MoveBack(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && movementEnable)
         {
             movementEnable = false;
             newRotation = transform.rotation.eulerAngles;
@@ -225,7 +231,7 @@ public class CharacterController : MonoBehaviour
 
     public void MoveRight(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && movementEnable)
         {
             movementEnable = false;
             newRotation = transform.rotation.eulerAngles;
@@ -256,7 +262,7 @@ public class CharacterController : MonoBehaviour
 
     public void MoveLeft(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && movementEnable)
         {
             movementEnable = false;
             newRotation = transform.rotation.eulerAngles;
@@ -289,7 +295,7 @@ public class CharacterController : MonoBehaviour
 
     public void ForwardAction(InputAction.CallbackContext context)
     {
-        if ((((endPosition.x + distanceSaut) >= 7) && currentDirection == Direction.right)|| (((endPosition.x - distanceSaut) <= -7 && currentDirection == Direction.left)) || (((endPosition.z - distanceSaut) <= -5) && currentDirection == Direction.back))
+        if ((((endPosition.x + distanceSaut) >= 7) && currentDirection == Direction.right)|| (((endPosition.x - distanceSaut) <= -7 && currentDirection == Direction.left)) || (((endPosition.z - distanceSaut) <= -5) && currentDirection == Direction.back) && movementEnable)
         {
             return;
         }
