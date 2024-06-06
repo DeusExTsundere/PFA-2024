@@ -35,7 +35,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private GameObject victoryUI;
     [Header("Configuration")]
     [SerializeField, Range(0, 1.5f)] private float inputTime = 0.5f;
-    [SerializeField] private float distanceSaut = 1.5f;
+    [SerializeField] private int distanceSaut = 2;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private GameObject resumeButton;
     private void Start()

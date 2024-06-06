@@ -1475,7 +1475,7 @@ MonoBehaviour:
   menuFailed: {fileID: 2013465090}
   victoryUI: {fileID: 1646640655}
   inputTime: 0.25
-  distanceSaut: 1.5
+  distanceSaut: 1
   characterController: {fileID: 442890287}
   resumeButton: {fileID: 436588835}
 --- !u!114 &442890290
@@ -6420,7 +6420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d08664f9d7e42147bdd93fad164e86e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextLevel: level 1
+  nextLevel: proto
   mainMenu: menu
 --- !u!1 &1657256878
 GameObject:
