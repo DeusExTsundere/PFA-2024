@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class voiture : MonoBehaviour
 {
-    [SerializeField] private int speed = 2;
+    [SerializeField,Range(1,10)] private int speed = 2;
     private Quaternion rotation;
 
     private void Start()

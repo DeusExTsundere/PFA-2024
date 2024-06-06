@@ -221,7 +221,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f26e5aa24215bd14b9be3d7714a096f5, type: 2}
+  - {fileID: 2100000, guid: 035a693b09e903c41901772236bf4e50, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1474,8 +1474,8 @@ MonoBehaviour:
   pauseMenu: {fileID: 1531055557}
   menuFailed: {fileID: 2013465090}
   victoryUI: {fileID: 1646640655}
-  inputTime: 0.25
-  distanceSaut: 1
+  inputTime: 0.1
+  distanceSaut: 2
   characterController: {fileID: 442890287}
   resumeButton: {fileID: 436588835}
 --- !u!114 &442890290
