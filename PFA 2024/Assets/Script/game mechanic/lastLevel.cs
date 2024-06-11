@@ -3,18 +3,27 @@ using TMPro;
 using System.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.TextCore.Text;
+using UnityEngine.EventSystems;
 
 public class lastLevel : MonoBehaviour
 {
     [SerializeField] private CharacterController character;
     [SerializeField] private GameObject actualScoring;
+    [SerializeField] private GameObject endButton;
     private float score = 0;
     private float top;
     private int difficulty;
     private int nbVie;
     private int multiplicator;
     private TextMeshProUGUI highscore;
+    private bool Active = false;
+    public bool Activate {  get { return Active; } }  
 
+    private void OnEnable()
+    {
+        Active = true;
+        EventSystem.current.SetSelectedGameObject(endButton);
+    }
     private void Awake()
     {
         highscore = GetComponent<TextMeshProUGUI>();

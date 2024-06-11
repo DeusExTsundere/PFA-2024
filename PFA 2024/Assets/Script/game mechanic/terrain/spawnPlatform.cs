@@ -7,7 +7,6 @@ public class spawnPlatform : MonoBehaviour
     [SerializeField] private GameObject platform;
     private Vector3 spawnPosition;
     private bool spawnEnable=true;
-    private int randomPlatform=1;
     private float spawnTime;
     private float chrono;
 
