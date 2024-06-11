@@ -25,6 +25,6 @@ public class timer : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat("levelChrono", temps);
+        PlayerPrefs.SetFloat("levelChrono", Mathf.FloorToInt(temps));
     }
 }

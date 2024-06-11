@@ -94,7 +94,11 @@ public class pause : MonoBehaviour
         {
             pauseButton[i].SetActive(true);
         }
-        soundSettings.SetActive(false);
+
+        if (soundSettings != null)
+        {
+            soundSettings.SetActive(false);
+        }
         exitSettings.SetActive(false);
     }
 }

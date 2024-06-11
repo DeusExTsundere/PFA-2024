@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -41,6 +42,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private int distanceSaut = 2;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private GameObject resumeButton;
+    [SerializeField] private Animator animator;
+
+    private const string ANIMATOR_JUMP_KEY = "Saut";
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();
@@ -181,10 +186,6 @@ public class CharacterController : MonoBehaviour
         {
             movementEnable =false;
             oldPosition = transform.position;
-            if ((endPosition.z + distanceSaut) >= 48)
-            {
-                return;
-            }
             newRotation = transform.rotation.eulerAngles;
             if (currentDirection == Direction.front)
             {
@@ -214,10 +215,6 @@ public class CharacterController : MonoBehaviour
         {
             oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.z - distanceSaut) <= -5)
-            {
-                return;
-            }
             if (currentDirection == Direction.back)
             {
                 TransformForward();
@@ -245,10 +242,6 @@ public class CharacterController : MonoBehaviour
         {
             oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.x + distanceSaut) >= 7)
-            {
-                return;
-            }
             if (currentDirection == Direction.right)
             {
                 TransformForward();
@@ -276,10 +269,6 @@ public class CharacterController : MonoBehaviour
         {
             oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.x - distanceSaut) <= -7)
-            {
-                return;
-            }
             if (currentDirection == Direction.left)
             {
                 TransformForward();
@@ -305,16 +294,9 @@ public class CharacterController : MonoBehaviour
 
     public void ForwardAction(InputAction.CallbackContext context)
     {
-        if ((((endPosition.x + distanceSaut) >= 7) && currentDirection == Direction.right)|| (((endPosition.x - distanceSaut) <= -7 && currentDirection == Direction.left)) || (((endPosition.z - distanceSaut) <= -5) && currentDirection == Direction.back) || !forward)
+        if (context.started)
         {
-            return;
-        }
-        else if (context.started)
-        {
-            oldPosition = transform.position;
-            elapsedTimeMove = 0f;
-            endPosition = transform.position;
-            endPosition += transform.forward * distanceSaut;
+            TransformForward();
         }
     }
 
@@ -375,6 +357,12 @@ public class CharacterController : MonoBehaviour
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition += transform.forward * distanceSaut;
+        StateTrigger();
+    }
+
+    public void StateTrigger()
+    {
+        animator?.SetTrigger(ANIMATOR_JUMP_KEY);
     }
 
     IEnumerator Death()
