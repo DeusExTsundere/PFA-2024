@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class option : MonoBehaviour
+public class option : MonoBehaviour, ICancelHandler
 {
     [Header("Main Menu")]
     [SerializeField] private CanvasGroup mainMenu;
@@ -37,6 +37,11 @@ public class option : MonoBehaviour
     private bool creditsMenuEnabled = false;
     private bool difficultyMenuEnabled = false;
     private bool soundMenuEnabled = false;
+
+    public void OnCancel(BaseEventData eventData)
+    {
+        Debug.Log("Cancel");
+    }
 
     private void Start()
     {
@@ -198,12 +203,14 @@ public class option : MonoBehaviour
     {
         mainMenuEnabled = false;
         StartCoroutine(CreditClickTempo());
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
-    public void ExitCreditMenu()
+    public void ExitCreditMenu(InputAction.CallbackContext context)
     {
         creditsMenuEnabled = false;
         EventSystem.current.SetSelectedGameObject(defaultMenuButton);
+        mainMenuEnabled = true;
     }
 
     public void ExitClick()
@@ -264,4 +271,5 @@ public class option : MonoBehaviour
         yield return new WaitForSeconds(tempo);
         setting.SetActive(true);
     }
+
 }
