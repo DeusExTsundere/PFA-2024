@@ -3299,7 +3299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5379cf075dd6949807a40df009bb7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 0}
+  character: {fileID: 1137204428}
 --- !u!114 &757940427
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class CharacterController : MonoBehaviour
     private float elapsedTimeMove;
     private float elapsedTimeRotation;
     private float rotationSpeed;
+    private float rotationWaits;
+    private float timeWaits = 4;
     private int vie = 3;
     public int PointDeVie {get {return vie;}}
     private Direction currentDirection = Direction.none;
@@ -158,6 +160,7 @@ public class CharacterController : MonoBehaviour
         isGrounded = true ;
         if (other.TryGetComponent(out platform platform))
         {
+            distanceSaut = 1;
             Vector3 platformTranslate = transform.position;
             if (platform.Side)
             {
@@ -168,6 +171,10 @@ public class CharacterController : MonoBehaviour
                 platformTranslate.x -= platform.PlatformSpeed * Time.deltaTime;
             }
             transform.position = platformTranslate;
+        }
+        else
+        {
+            distanceSaut = 2;
         }
     }
 
@@ -196,12 +203,15 @@ public class CharacterController : MonoBehaviour
                 if (currentDirection == Direction.back)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed/timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed/ timeWaits);
                 }
                 currentDirection = Direction.front;
+                StartCoroutine(MoveRotation());
             }
             elapsedTimeRotation = 0f;
             newRotation.y = 0f;
@@ -223,11 +233,14 @@ public class CharacterController : MonoBehaviour
                 if (currentDirection == Direction.front)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotation());
             }
             newRotation.y = 180f;
             elapsedTimeRotation = 0f;
@@ -250,11 +263,14 @@ public class CharacterController : MonoBehaviour
                 if (currentDirection == Direction.left)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotation());
             }
             newRotation.y = 90f;
             elapsedTimeRotation = 0f;
@@ -277,11 +293,14 @@ public class CharacterController : MonoBehaviour
                 if (currentDirection == Direction.right)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotation());
             }
             newRotation.y = 270f;
             elapsedTimeRotation = 0f;
@@ -359,6 +378,7 @@ public class CharacterController : MonoBehaviour
         StateTrigger();
     }
 
+
     public void StateTrigger()
     {
         animator?.SetTrigger(ANIMATOR_JUMP_KEY);
@@ -370,6 +390,12 @@ public class CharacterController : MonoBehaviour
         yield return new WaitForSeconds(0.75f);
         transform.position = respawn;
         input.ActivateInput();
+    }
+
+    IEnumerator MoveRotation()
+    {
+        yield return new WaitForSeconds(rotationWaits);
+        TransformForward();
     }
 
 }
