@@ -10,6 +10,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 respawn;
     private Vector3 newRotation;
     private Vector3 endPosition;
+    private Vector3 oldPosition;
     private Vector3 oldDirection;
     private Vector2 direction;
     private bool isGrounded = false;
@@ -17,16 +18,20 @@ public class CharacterController : MonoBehaviour
     private bool movementEnable = true;
     private bool paused = false;
     private bool finished = false;
+    private bool forward = true;
     public bool IsFinished { get { return finished; } }
     private float rotationComplete;
     private float moveComplete;
     private float elapsedTimeMove;
     private float elapsedTimeRotation;
     private float rotationSpeed;
+    private float rotationWaits;
+    private float timeWaits = 4;
     private int vie = 3;
     public int PointDeVie {get {return vie;}}
     private Direction currentDirection = Direction.none;
     private PlayerInput input;
+    private RaycastHit hit;
 
     [Header("Configuratin Menu")]
     [SerializeField] private GameObject ui;
@@ -34,10 +39,14 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private GameObject menuFailed;
     [SerializeField] private GameObject victoryUI;
     [Header("Configuration")]
-    [SerializeField, Range(0, 1.5f)] private float inputTime = 0.5f;
-    [SerializeField] private float distanceSaut = 1.5f;
+    [SerializeField, Range(0, 1.5f)] private float inputTime = 0.1f;
+    [SerializeField] private int distanceSaut = 2;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private GameObject resumeButton;
+    [SerializeField] private Animator animator;
+
+    private const string ANIMATOR_JUMP_KEY = "Saut";
+
     private void Start()
     {
         input = GetComponent<PlayerInput>();
@@ -65,12 +74,12 @@ public class CharacterController : MonoBehaviour
             }
             if (isAlive == true && movementEnable == true)
             {
-                if (moveComplete <= 1)
+                if (moveComplete < 1)
                 {
                     transform.position = Vector3.Lerp(transform.position, endPosition, moveComplete);
                     movementEnable = false;
                 }
-                else if (moveComplete >= 1)
+                else if (moveComplete > 1)
                 {
                     movementEnable = true;
                 }
@@ -100,6 +109,19 @@ public class CharacterController : MonoBehaviour
             ui.SetActive(false);
             menuFailed.SetActive(true);
         }
+        Debug.DrawRay(transform.position, transform.forward * 3 , Color.red);
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 3))
+        {
+            hit.transform.gameObject.TryGetComponent(out obstacle obstacle);
+            if (obstacle.getTrough == false)
+            {
+                forward = false;
+            }
+        }
+        else 
+        {
+            forward = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -108,14 +130,6 @@ public class CharacterController : MonoBehaviour
         if (other.tag == "victoire")
         {
             finished = true;
-        }
-        if (other.TryGetComponent(out obstacle obstacle))
-        {   
-            if (obstacle.getTrough == false)
-            {
-                endPosition -= transform.forward * distanceSaut;
-                elapsedTimeRotation = 0f;
-            }
         }
         else if (other.TryGetComponent(out trap trap))
         {
@@ -129,7 +143,6 @@ public class CharacterController : MonoBehaviour
         else if (other.TryGetComponent(out platform platform))
         {
             elapsedTimeRotation = 10f;
-
         }
         else if (other.TryGetComponent(out centerObject centerObject))
         {
@@ -146,6 +159,7 @@ public class CharacterController : MonoBehaviour
         isGrounded = true ;
         if (other.TryGetComponent(out platform platform))
         {
+            distanceSaut = 1;
             Vector3 platformTranslate = transform.position;
             if (platform.Side)
             {
@@ -156,6 +170,10 @@ public class CharacterController : MonoBehaviour
                 platformTranslate.x -= platform.PlatformSpeed * Time.deltaTime;
             }
             transform.position = platformTranslate;
+        }
+        else
+        {
+            distanceSaut = 2;
         }
     }
 
@@ -171,14 +189,12 @@ public class CharacterController : MonoBehaviour
     {
         if (context.started && movementEnable) 
         {
-            movementEnable = false;
-            if ((endPosition.z + distanceSaut) >= 48)
-            {
-                return;
-            }
+            movementEnable =false;
+            oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
             if (currentDirection == Direction.front)
             {
+                movementEnable |= movementEnable;
                 TransformForward();
             }
             else
@@ -186,12 +202,15 @@ public class CharacterController : MonoBehaviour
                 if (currentDirection == Direction.back)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed/timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed/ timeWaits);
                 }
                 currentDirection = Direction.front;
+                StartCoroutine(MoveRotationForward());
             }
             elapsedTimeRotation = 0f;
             newRotation.y = 0f;
@@ -202,26 +221,25 @@ public class CharacterController : MonoBehaviour
     {
         if (context.started && movementEnable)
         {
-            movementEnable = false;
+            oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.z - distanceSaut) <= -5)
-            {
-                return;
-            }
             if (currentDirection == Direction.back)
             {
-                TransformForward();
+                TransformBack();
             }
             else
             {
                 if (currentDirection == Direction.front)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotationBack());
             }
             newRotation.y = 180f;
             elapsedTimeRotation = 0f;
@@ -233,26 +251,25 @@ public class CharacterController : MonoBehaviour
     {
         if (context.started && movementEnable)
         {
-            movementEnable = false;
+            oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.x + distanceSaut) >= 7)
-            {
-                return;
-            }
             if (currentDirection == Direction.right)
             {
-                TransformForward();
+                TransformRight();
             }
             else
             {
                 if (currentDirection == Direction.left)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotationRight());
             }
             newRotation.y = 90f;
             elapsedTimeRotation = 0f;
@@ -264,26 +281,25 @@ public class CharacterController : MonoBehaviour
     {
         if (context.started && movementEnable)
         {
-            movementEnable = false;
+            oldPosition = transform.position;
             newRotation = transform.rotation.eulerAngles;
-            if ((endPosition.x - distanceSaut) <= -7)
-            {
-                return;
-            }
             if (currentDirection == Direction.left)
             {
-                TransformForward();
+                TransformLeft();
             }
             else
             {
                 if (currentDirection == Direction.right)
                 {
                     rotationSpeed = inputTime * 1.5f;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
                 else
                 {
                     rotationSpeed = inputTime;
+                    rotationWaits = (rotationSpeed / timeWaits);
                 }
+                StartCoroutine(MoveRotationLeft());
             }
             newRotation.y = 270f;
             elapsedTimeRotation = 0f;
@@ -295,15 +311,9 @@ public class CharacterController : MonoBehaviour
 
     public void ForwardAction(InputAction.CallbackContext context)
     {
-        if ((((endPosition.x + distanceSaut) >= 7) && currentDirection == Direction.right)|| (((endPosition.x - distanceSaut) <= -7 && currentDirection == Direction.left)) || (((endPosition.z - distanceSaut) <= -5) && currentDirection == Direction.back) && movementEnable)
+        if (context.started)
         {
-            return;
-        }
-        else if (context.started)
-        {
-            elapsedTimeMove = 0f;
-            endPosition = transform.position;
-            endPosition += transform.forward * distanceSaut;
+            TransformForward();
         }
     }
 
@@ -357,9 +367,54 @@ public class CharacterController : MonoBehaviour
     }
     private void TransformForward()
     {
+        if (!forward)
+        {
+            return;
+        }
         elapsedTimeMove = 0f;
         endPosition = transform.position;
-        endPosition += transform.forward * distanceSaut;
+        endPosition.z += distanceSaut;
+        StateTrigger();
+    }
+
+    private void TransformBack()
+    {
+        if (!forward)
+        {
+            return;
+        }
+        elapsedTimeMove = 0f;
+        endPosition = transform.position;
+        endPosition.z -= distanceSaut;
+        StateTrigger();
+    }
+
+    private void TransformRight()
+    {
+        if (!forward)
+        {
+            return;
+        }
+        elapsedTimeMove = 0f;
+        endPosition = transform.position;
+        endPosition.x += distanceSaut;
+    }
+
+    private void TransformLeft()
+    {
+        if (!forward)
+        {
+            return;
+        }
+        elapsedTimeMove = 0f;
+        endPosition = transform.position;
+        endPosition.x -= distanceSaut;
+    }
+
+
+    public void StateTrigger()
+    {
+        animator?.SetTrigger(ANIMATOR_JUMP_KEY);
     }
 
     IEnumerator Death()
@@ -370,6 +425,29 @@ public class CharacterController : MonoBehaviour
         input.ActivateInput();
     }
 
+    IEnumerator MoveRotationForward()
+    {
+        yield return new WaitForSeconds(rotationWaits);
+        TransformForward();
+    }
+
+    IEnumerator MoveRotationBack()
+    {
+        yield return new WaitForSeconds(rotationWaits);
+        TransformBack();
+    }
+
+    IEnumerator MoveRotationRight()
+    {
+        yield return new WaitForSeconds(rotationWaits);
+        TransformRight();
+    }
+
+    IEnumerator MoveRotationLeft()
+    {
+        yield return new WaitForSeconds(rotationWaits);
+        TransformLeft();
+    }
 }
 
 enum Direction

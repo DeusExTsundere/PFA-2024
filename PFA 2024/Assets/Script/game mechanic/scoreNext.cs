@@ -20,15 +20,15 @@ public class scoreNext : MonoBehaviour
 
     private void Awake()
     {
-        score += PlayerPrefs.GetFloat("levelScore");
+        score += PlayerPrefs.GetFloat("levelChrono");
         textScore = GetComponent<TextMeshProUGUI>();
         nbVie = character.PointDeVie;
-        score += nbVie * 100;
+        score += nbVie * 50;
         difficulty = PlayerPrefs.GetInt("difficulty");
         if (difficulty == 1)
         {
             multiplicator = 115;
-            score += 500;
+            score += 250;
         }
         else if (difficulty == 6)
         {
@@ -37,7 +37,7 @@ public class scoreNext : MonoBehaviour
         else
         {
             multiplicator = 100;
-            score += 200;
+            score += 150;
         }
 
         if (chrono >= objectif_1)

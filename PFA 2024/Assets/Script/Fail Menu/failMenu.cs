@@ -5,8 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class failMenu : MonoBehaviour
 {
-    [SerializeField] private string actualLevel;
+    private string actualLevel;
     [SerializeField] private string mainMenu;
+    private void Start()
+    {
+        actualLevel =SceneManager.GetActiveScene().name;
+    }
 
     public void retryButton()
     {

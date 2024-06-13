@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class spawnPlatform : MonoBehaviour
 {
-    [SerializeField] private GameObject[] platform;
+    [SerializeField] private GameObject platform;
+    private Vector3 spawnPosition;
     private bool spawnEnable=true;
-    private int randomPlatform=1;
     private float spawnTime;
     private float chrono;
+
+    private void Start()
+    {
+        spawnPosition = transform.position;
+        spawnPosition.y = -0.25f;
+    }
 
     void Update()
     {
@@ -18,10 +24,9 @@ public class spawnPlatform : MonoBehaviour
             if (chrono >= spawnTime)
             {
                 chrono = 0;
-                Instantiate(platform[randomPlatform],transform.position, Quaternion.identity);
+                Instantiate(platform,spawnPosition, Quaternion.identity);
                 spawnTime = Random.Range(2.5f, 10);
                 spawnEnable = false;
-                randomPlatform = Random.Range(0, platform.Length);
             }
         }
     }
