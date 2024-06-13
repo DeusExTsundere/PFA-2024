@@ -17,18 +17,20 @@ public class platform : MonoBehaviour
         if (transform.position.x > 0)
         {
             direction = false;
-            rotation.y = 180;
+            rotation.y = 270;
             transform.rotation = Quaternion.Euler(rotation);
         }
         else
         {
             direction = true;
+            rotation.y = 90;
+            transform.rotation = Quaternion.Euler(rotation);
         }
     }
 
     void Update()
     {
-        transform.position += transform.right * actualSpeed * Time.deltaTime;
+        transform.position += transform.forward * actualSpeed * Time.deltaTime;
     }
 
     private void OnBecameInvisible()
