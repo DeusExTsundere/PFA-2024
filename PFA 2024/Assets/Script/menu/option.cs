@@ -20,7 +20,6 @@ public class option : MonoBehaviour, ICancelHandler
     [Header("Settings Menu")]
     [SerializeField] private GameObject soundSettings;
     [SerializeField] private CanvasGroup soundMenu;
-    [SerializeField] private CanvasGroup controleMenu;
     [Header("Difficulty Menu")]
     [SerializeField] private CanvasGroup difficultyMenu;
     [SerializeField] private GameObject difficulty;
@@ -40,7 +39,8 @@ public class option : MonoBehaviour, ICancelHandler
 
     public void OnCancel(BaseEventData eventData)
     {
-        Debug.Log("Cancel");
+        mainMenuEnabled = true;
+        EventSystem.current.SetSelectedGameObject(defaultMenuButton);
     }
 
     private void Start()

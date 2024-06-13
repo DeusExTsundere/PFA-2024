@@ -15,7 +15,7 @@ public class timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (temps > 0)
+        if (Mathf.FloorToInt(temps) > 0)
         {
             temps -= Time.deltaTime;
         }
