@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     private bool paused = false;
     private bool finished = false;
     private bool forward = true;
+    private bool onPlatform = false;
     public bool IsFinished { get { return finished; } }
     private float rotationComplete;
     private float moveComplete;
@@ -159,6 +160,7 @@ public class CharacterController : MonoBehaviour
         isGrounded = true ;
         if (other.TryGetComponent(out platform platform))
         {
+            onPlatform = true ;
             distanceSaut = 1;
             Vector3 platformTranslate = transform.position;
             if (platform.Side)
@@ -173,6 +175,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            onPlatform = false;
             distanceSaut = 2;
         }
     }
@@ -321,26 +324,29 @@ public class CharacterController : MonoBehaviour
     {
         if (context.started)
         {
-            if (isAlive)
+            if (finished == false)
             {
-                paused = !paused;
-            }
-            if (paused == true)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 0f;
-                pauseMenu.SetActive(true);
-                ui.SetActive(false);
-                EventSystem.current.SetSelectedGameObject(resumeButton);
-            }
-            else
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                Time.timeScale = 1f;
-                pauseMenu.SetActive(false);
-                ui.SetActive(true);
+                if (isAlive)
+                {
+                    paused = !paused;
+                }
+                if (paused == true)
+                {
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    Time.timeScale = 0f;
+                    pauseMenu.SetActive(true);
+                    ui.SetActive(false);
+                    EventSystem.current.SetSelectedGameObject(resumeButton);
+                }
+                else
+                {
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Time.timeScale = 1f;
+                    pauseMenu.SetActive(false);
+                    ui.SetActive(true);
+                }
             }
         }
     }
@@ -371,6 +377,10 @@ public class CharacterController : MonoBehaviour
         {
             return;
         }
+        else if (onPlatform)
+        {
+            distanceSaut = 2;
+        }
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition.z += distanceSaut;
@@ -383,6 +393,10 @@ public class CharacterController : MonoBehaviour
         {
             return;
         }
+        else if (onPlatform)
+        {
+            distanceSaut = 2;
+        }
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition.z -= distanceSaut;
@@ -394,7 +408,7 @@ public class CharacterController : MonoBehaviour
         if (!forward)
         {
             return;
-        }
+        } 
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition.x += distanceSaut;
