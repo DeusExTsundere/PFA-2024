@@ -4974,7 +4974,6 @@ MonoBehaviour:
   creditsMenu: {fileID: 2089240826}
   soundSettings: {fileID: 2097213948}
   soundMenu: {fileID: 2097213954}
-  controleMenu: {fileID: 0}
   difficultyMenu: {fileID: 1458721902}
   difficulty: {fileID: 1458721901}
   defaultDifficulty: {fileID: 415187870}
