@@ -29,14 +29,6 @@ public class voiture : MonoBehaviour
         transform.position += transform.right * speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void OnBecameInvisible()
     {
         Destroy(gameObject);

@@ -39,10 +39,7 @@ public class pause : MonoBehaviour
 
     public void SettingsClick()
     {
-        for (int i = 0; i < pauseButton.Length; i++)
-        {
-            pauseButton[i].SetActive(false);
-        }
+            soundSettings.SetActive(false);
         for (int i = 0;i < settingsButton.Length; i++)
         {
             settingsButton[i].SetActive(true);

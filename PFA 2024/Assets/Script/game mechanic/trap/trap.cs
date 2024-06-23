@@ -5,6 +5,7 @@ using UnityEngine;
 public class trap : MonoBehaviour
 {
     [SerializeField] private bool water = false;
+    public bool isWater { get { return water; } } 
     [SerializeField, Range(0, 6)] private int damage = 1;
     public int LifeMinus { get { return damage; } }
 

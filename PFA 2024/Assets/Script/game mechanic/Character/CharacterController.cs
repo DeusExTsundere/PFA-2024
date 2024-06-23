@@ -40,6 +40,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private GameObject menuFailed;
     [SerializeField] private GameObject victoryUI;
     [Header("Configuration")]
+    [SerializeField] private AudioSource _jump;
+    [SerializeField] private AudioSource _nenuphar;
+    [SerializeField] private AudioSource _carDeath;
+    [SerializeField] private AudioSource _waterDeath;
     [SerializeField, Range(0, 1.5f)] private float inputTime = 0.1f;
     [SerializeField] private int distanceSaut = 2;
     [SerializeField] private CharacterController characterController;
@@ -135,9 +139,18 @@ public class CharacterController : MonoBehaviour
         else if (other.TryGetComponent(out trap trap))
         {
             vie -= trap.LifeMinus;
+            if (trap.isWater == true)
+            {
+                _waterDeath.Play();
+            }
+            else
+            {
+                _carDeath.Play();
+            }
             if (trap.Spawn == true)
             {
-                StartCoroutine(Death());
+                elapsedTimeMove = 5;
+                transform.position = respawn;
                 elapsedTimeRotation = 0f;
             }
         }
@@ -147,6 +160,7 @@ public class CharacterController : MonoBehaviour
         }
         else if (other.TryGetComponent(out centerObject centerObject))
         {
+            _nenuphar.Play();
             endPosition = centerObject.center;
         }
         if (isGrounded == true)
@@ -412,6 +426,7 @@ public class CharacterController : MonoBehaviour
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition.x += distanceSaut;
+        StateTrigger();
     }
 
     private void TransformLeft()
@@ -423,20 +438,14 @@ public class CharacterController : MonoBehaviour
         elapsedTimeMove = 0f;
         endPosition = transform.position;
         endPosition.x -= distanceSaut;
+        StateTrigger();
     }
 
 
     public void StateTrigger()
     {
         animator?.SetTrigger(ANIMATOR_JUMP_KEY);
-    }
-
-    IEnumerator Death()
-    {
-        input.DeactivateInput();
-        yield return new WaitForSeconds(0.75f);
-        transform.position = respawn;
-        input.ActivateInput();
+        _jump.Play();
     }
 
     IEnumerator MoveRotationForward()
